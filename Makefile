@@ -7,7 +7,7 @@ SPHINXOPTS    ?= -n
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = build
-GITDIR        = $(shell git branch --show-current)
+GITDIR        = $(shell git rev-parse --abbrev-ref HEAD)
 
 # Put it first so that "make" without argument is like "make help".
 help:
