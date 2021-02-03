@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require ('gulp');
+var cleanCSS = require('gulp-clean-css');
 var $ = require ('gulp-load-plugins') ();
 var connect = require('gulp-connect');
 
@@ -14,15 +15,15 @@ var paths = {
         dir: 'source/_static/css',
         main: 'source/_static/scss/main.css',
         files: 'source/_static/scss/**/*.css',
-        dist: 'build/master/html/_static/css'
+        dist: 'build/main/html/_static/css'
     },
     js: {
         dir: 'source/_static/js',
         main: 'source/_static/js/main.js',
         files: 'source/_static/js/**/*.js',
-        dist: 'build/master/html/_static/js',
+        dist: 'build/main/html/_static/js',
     },
-    dist: 'build/master/html'
+    dist: 'build/main/html'
 }
 
 // Compile SCSS
@@ -31,7 +32,7 @@ gulp.task('handleStyle', function() {
         .pipe($.sass ())
         .pipe($.autoprefixer())
         .pipe(gulp.dest (paths.css.dir))
-        .pipe($.cssmin())
+        .pipe(cleanCSS())
         .pipe($.rename({
             suffix: '.min'
         }))
@@ -64,4 +65,4 @@ gulp.task('watch', function () {
 });
 
 // Build
-gulp.task('default', gulp.series('handleStyle', 'handleJs', 'watch'));
+gulp.task('default', gulp.series('handleStyle', 'handleJs'));
