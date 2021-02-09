@@ -62,7 +62,7 @@ class MinioMCCommand(SphinxDirective):
    def run(self) -> List[Node]:
       command = self.arguments[0].strip()
       if (len(self.arguments) > 1):
-         command += " " + self.arguments[1].strip()
+         command += "-" + self.arguments[1].strip().replace(" ","-")
       
       self.env.ref_context['minio:command'] = command
       noindex = 'noindex' in self.options
@@ -125,12 +125,12 @@ class MinioMCObject(ObjectDescription):
         prefix = self.env.ref_context.get('minio:object', None)
 
         #Grab the top-level command name.
-        command_name = self.env.ref_context.get('minio:command')
+        command_name = self.env.ref_context.get('minio:command').replace("-"," ")
         name = member
         format_name = member
         format_alias = alias
         if prefix:
-            fullname = ' '.join([prefix, name])
+            fullname = '-'.join([prefix, name])
         else:
             fullname = name
 
@@ -146,11 +146,11 @@ class MinioMCObject(ObjectDescription):
         signode['fullname'] = fullname
 
         if prefix:
-           signode += addnodes.desc_addname(prefix + ' ', ' ')
+           signode += addnodes.desc_addname(prefix + '-', ' ')
         elif command_name and ('fullpath' in self.options):
-           signode += addnodes.desc_addname(command_name + ' ', command_name + ' ')
+           signode += addnodes.desc_addname(command_name + '-', command_name + ' ')
         elif command_name:
-           signode += addnodes.desc_addname(command_name + ' ', ' ')
+           signode += addnodes.desc_addname(command_name + '-', ' ')
         
         if (alias != None):
            signode += addnodes.desc_name(name + ', ' + alias, format_name + ', ' + format_alias)
@@ -164,7 +164,7 @@ class MinioMCObject(ObjectDescription):
     def add_target_and_index(self, name_obj: Tuple[str, str], sig: str,
                              signode: desc_signature) -> None:
         mod_name = self.env.ref_context.get('minio:command')
-        fullname = (mod_name + ' ' if mod_name else '') + name_obj[0]
+        fullname = (mod_name + '-' if mod_name else '') + name_obj[0]
         node_id = make_id(self.env, self.state.document, '', fullname)
         signode['ids'].append(node_id)
 
@@ -279,6 +279,7 @@ class MinioObject(ObjectDescription):
         prefix = self.env.ref_context.get('minio:object', None)
 
         fullname = member
+        print(fullname)
 
         if prefix:
           fullname = '.'.join([prefix, member])
@@ -400,31 +401,6 @@ class MinioObject(ObjectDescription):
         """
         return fullname.replace('$', '_S_')
 
-class MinioCallable(MinioObject):
-    """Description of a MinIO function, method or constructor."""
-    has_arguments = True
-
-    doc_field_types = [
-        TypedField('arguments', label=_('Arguments'),
-                   names=('argument', 'arg', 'parameter', 'param'),
-                   typerolename='func', typenames=('paramtype', 'type')),
-        GroupedField('errors', label=_('Throws'), rolename='err',
-                     names=('throws', ),
-                     can_collapse=True),
-        Field('returnvalue', label=_('Returns'), has_arg=False,
-              names=('returns', 'return')),
-        Field('returntype', label=_('Return type'), has_arg=False,
-              names=('rtype',)),
-    ]
-
-class MinioConstructor(MinioCallable):
-    """Like a callable but with a different prefix."""
-    display_prefix = 'class '
-    allow_nesting = True
-
-class MinioCommand(MinioObject):
-   allow_nesting = True
-
 class MinioCMDOptionXRefRole(XRefRole):
     def process_link(self, env: BuildEnvironment, refnode: Element,
                      has_explicit_title: bool, title: str, target: str) -> Tuple[str, str]:
@@ -448,6 +424,7 @@ class MinioCMDOptionXRefRole(XRefRole):
         if target[0:1] == '.':
             target = target[1:]
             refnode['refspecific'] = True
+        target = target.replace(" ","-")
 
         return title, target
 
@@ -477,6 +454,7 @@ class MinioXRefRole(XRefRole):
             refnode['refspecific'] = True
 
         if (self.reftype == "mc" or self.reftype == "mc-cmd" or self.reftype == "mc-cmd-option"):
+          target = target.replace(" ","-")
           return title, target
         
         target = self.reftype + "." + target
