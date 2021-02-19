@@ -115,7 +115,7 @@ html_title = 'MinIO Hybrid Cloud Documentation'
 
 rst_epilog = """
 
-.. |minio-operator-release| replace:: ``minio/k8s-operator:v3.0.28``
+.. |minio-operator-release| replace:: ``minio/k8s-operator:v3.0.29``
 
 .. |minio-server-release| replace::   ``minio/minio:RELEASE.2020-10-03T02-19-42Z``
 
@@ -123,6 +123,6 @@ rst_epilog = """
 
 rst_prolog = """
 
-.. |minio-operator-latest-version| replace:: v3.0.28
+.. |minio-operator-latest-version| replace:: v3.0.29
 
 """
