@@ -111,6 +111,9 @@ html_js_files = ['js/main.js']
 
 html_title = 'MinIO Hybrid Cloud Documentation'
 
+html_permalinks_icon = "<img class='anchor' src=https://docs.min.io/minio/baremetal/_static/img/anchor-link.svg />"
+
+
 # rst_epilog contains common replacements for all pages
 
 rst_epilog = """
