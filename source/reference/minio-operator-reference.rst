@@ -25,6 +25,9 @@ and interacting with Kubernetes ``YAML`` objects. Users who would prefer a more
 simplified experience should use the :ref:`minio-kubectl-plugin` for deploying
 and managing MinIO Tenants.
 
+The MinIO Kubernetes Operator |operator-version-stable| requires Kubernetes
+1.17.0 or later:
+
 
 Deploying the MinIO Operator
 ----------------------------
