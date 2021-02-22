@@ -15,16 +15,17 @@ MinIO Kubernetes Plugin
 Overview
 --------
 
-MinIO is a high performance distributed object storage server, designed for
-large-scale private cloud infrastructure. Orchestration platforms like
-Kubernetes provide perfect cloud-native environment to deploy and scale MinIO.
-The :minio-git:`MinIO Kubernetes Operator </minio-operator>` brings native MinIO
-support to Kubernetes. 
+.. admonition:: Current Stable Version is |operator-version-stable|
+   :class: note
 
-The :mc:`kubectl minio` plugin brings native support for deploying MinIO
-tenants to Kubernetes clusters using the ``kubectl`` CLI. You can use
-:mc:`kubectl minio` to deploy a MinIO tenant with little to no interaction
-with ``YAML`` configuration files. 
+   This reference documentation reflects |operator-version-stable| of the 
+   MinIO Kubernetes Operator and :mc:`kubectl minio` plugin. 
+
+The :mc:`kubectl minio` plugin brings native support for deploying MinIO tenants
+to Kubernetes clusters using the ``kubectl`` CLI. You can use 
+:mc:`kubectl minio` to deploy a MinIO tenant with little to no interaction with 
+``YAML`` configuration files. This documentation reflects the latest stable 
+version of the MinIO Kubernetes Plugin: |operator-version-stable|.
 
 .. image:: /images/Kubernetes-Minio.svg
    :align: center
@@ -33,14 +34,12 @@ with ``YAML`` configuration files.
    :alt: Kubernetes Orchestration with the MinIO Operator facilitates automated deployment of MinIO clusters.
 
 :mc:`kubectl minio` builds its interface on top of the
-MinIO Kubernetes Operator. Visit the
-:minio-git:`MinIO Operator </minio-operator>` Github repository to follow
-ongoing development on the Operator and Plugin.
+:minio-git:`MinIO Kubernetes Operator <minio-operator>`. 
 
 Installation
 ------------
 
-The MinIO Kubernetes Plugin requires Kubernetes 1.17.0 or later:
+The MinIO Kubernetes Plugin requires Kubernetes 1.19.0 or later:
 
 **Prerequisite**
 
@@ -341,7 +340,7 @@ Create a MinIO Tenant
       MinIO Key Encryption Service (KES) configuration. Required for 
       enabling Server Side Encryption of objects (SSE-S3).
 
-   .. mc-cmd:: output
+   .. mc-cmd:: output, o
       :option:
 
       Outputs the generated ``YAML``-formatted specification objects to

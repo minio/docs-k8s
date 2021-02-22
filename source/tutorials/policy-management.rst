@@ -11,7 +11,9 @@ Policy Management
 This page documents procedures for managing policies on a MinIO Tenant. MinIO
 uses Policy-Based Access Control (PBAC) for defining the actions and resources
 to which a client has access. MinIO policies are JSON documents with
-:iam-docs:`IAM-compatible syntax <reference_policies.html>`.
+:iam-docs:`IAM-compatible syntax <reference_policies.html>`. See
+:baremetal:`MinIO IAM Policies <security/IAM/iam-policies>` for more information
+on MinIO policies.
 
 Each MinIO user can have *one* attached policy for
 defining its scope of access. MinIO also supports creating *groups* of users,
@@ -85,6 +87,10 @@ IAM policy:
 
    * - :guilabel:`Write Policy`
      - The JSON document describing the IAM policy. 
+
+       See :baremetal:`MinIO IAM Policies <security/IAM/iam-policies>` for 
+       information on MinIO's supported S3 policy actions.
+       
        See :iam-docs:`IAM JSON policy reference <reference_policies.html>`
        for more complete documentation of supported syntax.
 
