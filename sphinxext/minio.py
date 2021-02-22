@@ -132,7 +132,7 @@ class MinioMCObject(ObjectDescription):
         #Grab the top-level command name.
         command_name = self.env.ref_context.get('minio:mc').replace("-"," ")
         name = member
-        format_name = member
+        format_name = member.replace("-"," ")
         format_alias = alias
         if prefix:
             fullname = '-'.join([prefix, name])
