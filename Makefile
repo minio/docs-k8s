@@ -8,6 +8,8 @@ SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = build
 GITDIR        = $(shell git rev-parse --abbrev-ref HEAD)
+OPERATORGIT   = https://raw.githubusercontent.com/minio/operator/master
+OPERATORDIR   = $(SOURCEDIR)/includes/git-operator
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -25,3 +27,10 @@ dryrun:
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)/$(GITDIR)" $(SPHINXOPTS) $(O)
 	@npm run build
+
+sync-git:
+	@echo "Pulling down latest stable operator examples from $(OPERATORTAG)"
+	@echo "Storing files in $(OPERATORDIR)"
+
+	@wget $(OPERATORGIT)/examples/tenant.yaml \
+	  -O $(OPERATORDIR)/tenant.yaml

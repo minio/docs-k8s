@@ -13,11 +13,6 @@ This page documents procedures for managing
 MinIO enforces authentication and authorization for all incoming requests,
 where clients *must* present the credentials for a user on the MinIO Tenant.
 
-.. todo
-
-   For documentation on managing users through an External IDentity Provider
-   (IDP), see <LINK>.
-
 .. _minio-k8s-create-new-user:
 
 Create a New MinIO User
