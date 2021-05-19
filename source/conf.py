@@ -45,7 +45,8 @@ extensions = [
     'sphinx-prompt',
     'sphinx_substitution_extensions',
     'sphinx_togglebutton',
-    'sphinx.ext.intersphinx'
+    'sphinx.ext.intersphinx',
+    'sphinxcontrib.images'
 ]
 
 # -- External Links
@@ -79,6 +80,12 @@ exclude_patterns = ['includes/*.rst']
 # Copy-Button Customization
 
 copybutton_selector = "div.copyable pre"
+
+# Image Lightbox Customization
+
+images_config = { 
+    'override_image_directive' : True,
+}
 
 # -- Options for HTML output -------------------------------------------------
 
