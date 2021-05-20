@@ -125,10 +125,10 @@ b. Create the Required Persistent Volumes
             required:
                nodeSelectorTerms:
                - matchExpressions:
-               - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                  - NODE-NAME
+                  - key: kubernetes.io/hostname
+                     operator: In
+                     values:
+                     - NODE-NAME
 
    .. list-table::
       :header-rows: 1
