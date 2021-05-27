@@ -78,7 +78,7 @@ parity levels for a Tenant depends on the MinIO version deployed on that Tenant:
 
 You can set a custom erasure code parity setting by specifying the 
 :envvar:`MINIO_STORAGE_CLASS_STANDARD` and 
-:envvar:`MINIO_STORAGE_CLASS_REDUCED` environment variables for 
+:envvar:`MINIO_STORAGE_CLASS_RRS` environment variables for 
 standard and reduced parity respectively. Use the 
 :minio-crd:`env <TenantSpec>` to specify the environment variables as part of 
 the MinIO Tenant ``YAML`` specification *prior* to creating the Tenant. 

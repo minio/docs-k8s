@@ -121,7 +121,7 @@ following resources:
          spec:
            accessModes:
            - ReadWriteOnce
-           storageClassName: local-storage
+           storage-class: local-storage
            resources:
              requests:
                storage: 10Gi
@@ -520,7 +520,7 @@ Claims (``PVC``) for use in the MinIO Tenant.
               :kubeconf:`~spec.pools.volumeClaimTemplate.spec.dataSource`: <object>
               :kubeconf:`~spec.pools.volumeClaimTemplate.spec.resources`: <object>
               :kubeconf:`~spec.pools.volumeClaimTemplate.spec.selector`: <object>
-              :kubeconf:`~spec.pools.volumeClaimTemplate.spec.storageClassName`: <string>
+              :kubeconf:`~spec.pools.volumeClaimTemplate.spec.storage-class`: <string>
               :kubeconf:`~spec.pools.volumeClaimTemplate.spec.volumeMode`: <string>
               :kubeconf:`~spec.pools.volumeClaimTemplate.spec.volumeName`: <string>
            status: <object>
@@ -671,7 +671,7 @@ Claims (``PVC``) for use in the MinIO Tenant.
       :start-after: start-kubeapi-persistentvolumeclaimspec
       :end-before: end-kubeapi-persistentvolumeclaimspec
 
-.. kubeconf:: spec.pools.volumeClaimTemplate.spec.storageClassName
+.. kubeconf:: spec.pools.volumeClaimTemplate.spec.storage-class
 
    *Optional*
 

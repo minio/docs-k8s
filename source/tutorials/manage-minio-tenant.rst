@@ -56,7 +56,7 @@ The following YAML describes a ``PV`` ``local`` volume:
       accessModes:
       - ReadWriteOnce
       persistentVolumeReclaimPolicy: Retain
-      storageClassName: local-storage
+      storage-class: local-storage
       local:
          path: /mnt/disks/ssd1
       nodeAffinity:
@@ -99,7 +99,7 @@ The following YAML describes a ``PV`` ``local`` volume:
    * - .. code-block:: yaml
             
             spec:
-               storageClassName:
+               storage-class:
 
      - Set to the ``StorageClass`` created for supporting the
        MinIO ``local`` volumes.
@@ -141,6 +141,7 @@ The following example expands a MinIO Tenant with a Pool consisting of
      --servers                 4                \
      --volumes                 16               \
      --capacity                16Ti             \
+     --storage-class           local-storage    \
      --namespace               minio-tenant-1
 
 The following table explains each argument specified to the command:
@@ -153,23 +154,28 @@ The following table explains each argument specified to the command:
    * - Argument
      - Description
 
-   * - :mc-cmd:`minio-tenant-1 <kubectl minio tenant create TENANT_NAME>`
-     - The name of the MinIO Tenant which the command creates.
+   * - :mc-cmd:`minio-tenant-1 <kubectl minio tenant expand TENANT_NAME>`
+     - The name of the MinIO Tenant which the command expands with the new pool.
 
-   * - :mc-cmd-option:`~kubectl minio tenant create servers`
-     - The number of ``minio`` servers to deploy across the Kubernetes 
-       cluster.
+   * - :mc-cmd-option:`~kubectl minio tenant expand servers`
+     - The number of ``minio`` servers to deploy in the new Tenant Pool across
+       the Kubernetes cluster.
 
-   * - :mc-cmd-option:`~kubectl minio tenant create volumes`
-     - The number of volumes in the cluster. :mc:`kubectl minio` determines the
-       number of volumes per server by dividing ``volumes`` by ``servers``.
+   * - :mc-cmd-option:`~kubectl minio tenant expand volumes`
+     - The number of volumes in the new Tenant Pool. :mc:`kubectl minio`
+       determines the number of volumes per server by dividing ``volumes`` by
+       ``servers``.
 
-   * - :mc-cmd-option:`~kubectl minio tenant create capacity`
-     - The total capacity of the cluster. :mc:`kubectl minio` determines the 
+   * - :mc-cmd-option:`~kubectl minio tenant expand capacity`
+     - The total capacity of the Tenant Pool. :mc:`kubectl minio` determines the
        capacity of each volume by dividing ``capacity`` by ``volumes``.
 
-   * - :mc-cmd-option:`~kubectl minio tenant create namespace`
-     - The Kubernetes namespace in which to deploy the MinIO Tenant.
+   * - :mc-cmd-option:`~kubectl minio tenant expand storage-class`
+     - The Kubernetes ``StorageClass`` to use when creating each PVC.
+
+   * - :mc-cmd-option:`~kubectl minio tenant expand namespace`
+     - The Kubernetes namespace of the existing MinIO Tenant to which to add
+       the new Tenant pool.
 
 3) Validate the Expanded MinIO Tenant
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

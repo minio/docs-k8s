@@ -118,7 +118,7 @@ b. Create the Required Persistent Volumes
          accessModes:
          - ReadWriteOnce
          persistentVolumeReclaimPolicy: Retain
-         storageClassName: local-storage
+         storage-class: local-storage
          local:
             path: /mnt/disks/ssd1
          nodeAffinity:
@@ -161,7 +161,7 @@ b. Create the Required Persistent Volumes
       * - .. code-block:: yaml
              
              spec:
-                storageClassName:
+                storage-class:
 
         - Set to the ``StorageClass`` created for supporting the
           MinIO ``local`` volumes.
@@ -223,7 +223,7 @@ total capacity of 16Ti across 16 drives.
      --servers                 4                \
      --volumes                 16               \
      --capacity                16Ti             \
-     --storageClassName        local-storage    \
+     --storage-class           local-storage    \
      --namespace               minio-tenant-1
 
 The following table explains each argument specified to the command:
@@ -251,11 +251,11 @@ The following table explains each argument specified to the command:
      - The total capacity of the cluster. :mc:`kubectl minio` determines the 
        capacity of each volume by dividing ``capacity`` by ``volumes``.
 
+   * - :mc-cmd-option:`~kubectl minio tenant create storage-class`
+     - The Kubernetes ``StorageClass`` to use when creating each PVC.
+
    * - :mc-cmd-option:`~kubectl minio tenant create namespace`
      - The Kubernetes namespace in which to deploy the MinIO Tenant.
-
-   * - :mc-cmd-option:`~kubectl minio tenant create storageClassName`
-     - The Kubernetes ``StorageClass`` to use when creating each PVC.
 
 On success, the command returns the following:
 

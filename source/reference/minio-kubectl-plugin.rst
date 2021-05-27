@@ -212,7 +212,7 @@ Create a MinIO Tenant
               --volumes          8                     \
               --capacity         32Ti                  \
               --namespace        minio-tenant-1        \
-              --storageClassName local-storage
+              --storage-class local-storage
 
    On success, the command returns the following:
 
@@ -298,7 +298,7 @@ Create a MinIO Tenant
       :mc:`kubectl minio tenant create` hangs and waits until the required
       storage exists.
 
-   .. mc-cmd:: storageClassName
+   .. mc-cmd:: storage-class
       :option:
 
       *Optional*
@@ -307,8 +307,8 @@ Create a MinIO Tenant
       :kube-docs:`Storage Class <concepts/storage/storage-classes/>` to use
       when creating Persistent Volume Claims (``PVC``) for the
       MinIO Tenant. The specified 
-      :mc-cmd-option:`~kubectl minio tenant create storageClassName` 
-      *must* match the ``StorageClassName`` of the Persistent Volumes (``PVs``)
+      :mc-cmd-option:`~kubectl minio tenant create storage-class` 
+      *must* match the ``storage-class`` of the Persistent Volumes (``PVs``)
       to which the ``PVCs`` should bind.
 
       MinIO strongly recommends creating a Storage Class that corresponds to 
@@ -388,7 +388,7 @@ Expand a MinIO Tenant
               --volumes          8                     \
               --capacity         32Ti                  \
               --namespace        minio-tenant-1        \
-              --storageClassName local-storage
+              --storage-class local-storage
 
    The command supports the following arguments:
 
@@ -462,6 +462,26 @@ Expand a MinIO Tenant
       *must* match that of the MinIO Tenant being extended.
 
       Defaults to ``minio``.
+
+   .. mc-cmd:: storage-class
+      :option:
+
+      *Optional*
+
+      The name of the Kubernetes 
+      :kube-docs:`Storage Class <concepts/storage/storage-classes/>` to use
+      when creating Persistent Volume Claims (``PVC``) for the new
+      MinIO Tenant Pool. The specified 
+      :mc-cmd-option:`~kubectl minio tenant expand storage-class` 
+      *must* match the ``storage-class`` of the Persistent Volumes (``PVs``)
+      to which the ``PVCs`` should bind.
+
+      MinIO strongly recommends creating a Storage Class that corresponds to 
+      locally-attached volumes on the host machines on which the Tenant 
+      deploys. This ensures each pod can use locally-attached storage for 
+      maximum performance and throughput. See the 
+      :doc:`/tutorials/deploy-minio-tenant` tutorial for guidance 
+      on creating Storage Classes for supporting the MinIO Tenant.
 
    .. mc-cmd:: output
       :option:
