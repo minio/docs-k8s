@@ -1,29 +1,14 @@
-=====================
-Deploy a MinIO Tenant
-=====================
+.. _deploy-minio-tenant-commandline:
+
+============================================
+Deploy a MinIO Tenant using the MinIO Plugin
+============================================
 
 .. default-domain:: minio
 
 .. contents:: Table of Contents
    :local:
    :depth: 2
-
-Overview
---------
-
-This page documents procedures for using either the MinIO Operator Console 
-*or* the ``kubectl minio`` plugin for deploying a MinIO Tenant.
-
-Deploy a Tenant using the MinIO Console
----------------------------------------
-
-This procedure documents deploying a MinIO Tenant using the 
-MinIO Operator Console. 
-
-.. Return to this when Operator Console is ready.
-
-Deploy a Tenant using the MinIO Kubernetes Plugin
--------------------------------------------------
 
 This procedure documents deploying a MinIO Tenant using the 
 MinIO Kubernetes Plugin :mc:`kubectl minio`. 
@@ -33,25 +18,36 @@ Tenants prior to deployment can use this tutorial to create a validated
 ``yaml`` resource file for further modification.
 
 The following procedure creates a MinIO tenant using the
-:mc:`kubectl minio` plugin.
+:mc:`kubectl minio` plugin. This procedure assumes the 
+MinIO Operator is installed on the Kubernetes cluster. See 
+:ref:`deploy-operator-kubernetes` for complete documentation on deploying the 
+MinIO Operator.
 
-1) Initialize the MinIO Operator
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1) Install the MinIO Plugin
+---------------------------
 
-:mc:`kubectl minio` requires the MinIO Operator. Use the
-:mc-cmd:`kubectl minio init` command to initialize the MinIO Operator:
+*Optional*
 
-.. code-block:: shell
+Download the latest :minio-git:`kubectl-minio release <operator/releases/>`
+for your system architecture. Set the file permissions to allow executing the 
+binary and move it to your system ``$PATH``. 
+
+The following code downloads the latest stable version |operator-version-stable|
+for ARM64 Linux distributions, sets the binary to executable, and copies it to
+the system ``$PATH``:
+
+.. parsed-literal::
    :class: copyable
 
-   kubectl minio init
+   wget https://github.com/minio/operator/releases/download/v4.1.1/kubectl-minio_4.1.1_linux_amd64
+   chmod ~x kubectl-minio
+   mv kubectl-minio /usr/local/bin/
 
-The example command deploys the MinIO operator to the ``default`` namespace.
-Include the :mc-cmd-option:`~kubectl minio init namespace` option to
-specify the namespace you want to deploy the MinIO operator into.
+Replace the ``wget`` URL with the appropriate executable from the 
+latest stable :minio-git:`release <operator/releases/>`.
 
 2) Configure the Persistent Volumes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------
 
 MinIO automatically generates one 
 :kube-docs:`Persistent Volume Claim (PVC) 
@@ -72,7 +68,7 @@ You can skip this step if the cluster already has local ``PV`` resources and a
 
 
 a. Create a ``StorageClass`` for the MinIO ``local`` Volumes
-````````````````````````````````````````````````````````````
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. container:: indent
 
@@ -97,7 +93,7 @@ a. Create a ``StorageClass`` for the MinIO ``local`` Volumes
    Node's local ``PV``.
 
 b. Create the Required Persistent Volumes
-`````````````````````````````````````````
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. container:: indent
 
@@ -181,7 +177,7 @@ b. Create the Required Persistent Volumes
    total of 16 ``local`` ``PVs``. 
 
 c. Validate the Created PV
-``````````````````````````
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. container:: indent
 
@@ -193,7 +189,7 @@ c. Validate the Created PV
       kubectl get PV
 
 3) Create a Namespace for the MinIO Tenant
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------------
 
 Use the ``kubectl create namespace`` command to create a namespace for
 the MinIO Tenant:
@@ -206,7 +202,7 @@ the MinIO Tenant:
 MinIO supports exactly *one* Tenant per namespace.
 
 4) Create the MinIO Tenant
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 Use the :mc-cmd:`kubectl minio tenant create` command to create the MinIO
 Tenant. The command always uses the latest stable Docker image of the 
@@ -272,7 +268,7 @@ On success, the command returns the following:
   Tenant.
 
 5) Configure Access to the Service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------
 
 :mc:`kubectl minio` creates a service for the MinIO Tenant and MinIO Console.
 The output of :mc-cmd:`kubectl minio tenant create` includes the details for 

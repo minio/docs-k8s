@@ -24,8 +24,7 @@ Overview
 The :mc:`kubectl minio` plugin brings native support for deploying MinIO tenants
 to Kubernetes clusters using the ``kubectl`` CLI. You can use 
 :mc:`kubectl minio` to deploy a MinIO tenant with little to no interaction with 
-``YAML`` configuration files. This documentation reflects the latest stable 
-version of the MinIO Kubernetes Plugin: |operator-version-stable|.
+``YAML`` configuration files.
 
 .. image:: /images/Kubernetes-Minio.svg
    :align: center
@@ -33,13 +32,14 @@ version of the MinIO Kubernetes Plugin: |operator-version-stable|.
    :class: no-scaled-link
    :alt: Kubernetes Orchestration with the MinIO Operator facilitates automated deployment of MinIO clusters.
 
-:mc:`kubectl minio` builds its interface on top of the
-:minio-git:`MinIO Kubernetes Operator <minio-operator>`. 
+Installing :mc:`kubectl minio` implies installing the
+:minio-git:`MinIO Kubernetes Operator <minio-operator>`.
+
 
 Installation
 ------------
 
-The MinIO Kubernetes Plugin requires Kubernetes 1.17.0 or later:
+The MinIO Kubernetes Plugin requires Kubernetes 1.19.0 or later:
 
 **Prerequisite**
 
@@ -96,9 +96,7 @@ Create the MinIO Operator
 
       The image to use for deploying the operator. 
       Defaults to the :minio-git:`latest release of the operator
-      <minio/operator/releases/latest>`:
-
-      ``minio/k8s-operator:latest``
+      <minio/operator/releases/latest>`.
 
    .. mc-cmd:: namespace
       :option:
@@ -129,6 +127,33 @@ Create the MinIO Operator
       The MinIO-hosted ``minio/k8s-operator`` image is *not* password protected.
       This option is only required for non-MinIO image sources which are
       password protected.
+
+   .. mc-cmd:: console-image
+      :option:
+
+      The image to use when deploying the
+      :minio-git:`MinIO console` in Operator mode, where administrators can 
+      create and manage MinIO tenants using a Graphical User Interface.
+
+      Defaults to ``minio/console:v0.7.4``.
+
+   .. mc-cmd:: default-minio-image
+      :option:
+
+      The default :minio-git:`minio` image to use when creating a new MinIO 
+      tenant. Defaults to ``minio/minio:RELEASE.2021-06-07T21-40-51Z``.
+
+   .. mc-cmd:: default-console-image
+      :option:
+
+      The default :minio-git:`console` image to use when creating a new MinIO 
+      tenant. Defaults to ``minio/console:v0.7.4``.
+
+   .. mc-cmd:: default-kes-image
+      :option:
+
+      The default :minio-git:`kes` image to use when creating a new MinIO 
+      tenant. Defaults to ``minio/kes:v0.14.0``.
 
    .. mc-cmd:: output
       :option:
@@ -315,7 +340,7 @@ Create a MinIO Tenant
       locally-attached volumes on the host machines on which the Tenant 
       deploys. This ensures each pod can use locally-attached storage for 
       maximum performance and throughput. See the 
-      :doc:`/tutorials/deploy-minio-tenant` tutorial for guidance 
+      :doc:`/tenant-management/deploy-minio-tenant` tutorial for guidance 
       on creating Storage Classes for supporting the MinIO Tenant.
 
       Defaults to ``default``.
@@ -480,7 +505,7 @@ Expand a MinIO Tenant
       locally-attached volumes on the host machines on which the Tenant 
       deploys. This ensures each pod can use locally-attached storage for 
       maximum performance and throughput. See the 
-      :doc:`/tutorials/deploy-minio-tenant` tutorial for guidance 
+      :doc:`/tenant-management/deploy-minio-tenant` tutorial for guidance 
       on creating Storage Classes for supporting the MinIO Tenant.
 
    .. mc-cmd:: output

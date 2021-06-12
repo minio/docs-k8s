@@ -55,18 +55,19 @@ extensions = [
 # Helpful for sites we tend to make lots of references to.
 
 extlinks = {
-    'kube-docs'    : ('https://kubernetes.io/docs/%s', ''),
-    'minio-git'    : ('https://github.com/minio/%s',''),
-    'github'       : ('https://github.com/%s',''),
-    'kube-api'     : ('https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/%s',''),
-    'aws-docs'     : ('https://docs.aws.amazon.com/%s',''),
-    's3-docs'      : ('https://docs.aws.amazon.com/AmazonS3/latest/dev/%s',''),
-    's3-api'       : ('https://docs.aws.amazon.com/AmazonS3/latest/API/%s',''),
-    'iam-docs'     : ('https://docs.aws.amazon.com/IAM/latest/UserGuide/%s',''),
-    'release'      : ('https://github.com/minio/mc/releases/tag/%s',''),
-    'legacy'       : ('https://docs.min.io/docs/%s',''),
-    'minio-crd'    : ('https://github.com/minio/operator/blob/master/docs/crd.adoc#%s', ''),
-    'baremetal'    : ('https://docs.min.io/minio/baremetal/%s.html',''),
+    'kube-docs'         : ('https://kubernetes.io/docs/%s', ''),
+    'minio-git'         : ('https://github.com/minio/%s',''),
+    'github'            : ('https://github.com/%s',''),
+    'kube-api'          : ('https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/%s',''),
+    'aws-docs'          : ('https://docs.aws.amazon.com/%s',''),
+    's3-docs'           : ('https://docs.aws.amazon.com/AmazonS3/latest/dev/%s',''),
+    's3-api'            : ('https://docs.aws.amazon.com/AmazonS3/latest/API/%s',''),
+    'iam-docs'          : ('https://docs.aws.amazon.com/IAM/latest/UserGuide/%s',''),
+    'release'           : ('https://github.com/minio/mc/releases/tag/%s',''),
+    'legacy'            : ('https://docs.min.io/docs/%s',''),
+    'minio-crd'         : ('https://github.com/minio/operator/blob/master/docs/crd.adoc#%s', ''),
+    'baremetal'         : ('https://docs.min.io/minio/baremetal/%s.html',''),
+    'openshift-docs'    : ('https://docs.openshift.com/container-platform/4.7/%s', ''),
 }
 
 # Add any paths that contain templates here, relative to this directory.
@@ -132,7 +133,7 @@ rst_epilog = """
 
 rst_prolog = """
 
-.. |operator-version-stable| replace:: v4.0.0
+.. |operator-version-stable| replace:: v4.1.1
 
 """
 
