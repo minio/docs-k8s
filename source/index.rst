@@ -20,7 +20,9 @@ deploying and managing MinIO Tenants on Kubernetes clusters.
 
 This documentation reflects version |operator-version-stable| of the MinIO
 Kubernetes Operator and Plugin. Both the Operator and Plugin require Kubernetes
-1.17.0 or later.
+1.19.0 or later. The Operator and Plugin v3.X.X releases required Kubernetes
+1.17.0 or later. You must upgrade your Kubernetes cluster to 1.19.0 or later
+to use Operator v4.0.0+.
 
 This documentation assumes familiarity with all referenced Kubernetes
 concepts, utilities, and procedures. While this documentation *may* 
@@ -31,17 +33,17 @@ on a best-effort basis, it is not a replacement for the official
 Getting Started
 ---------------
 
-Use the :doc:`/tutorials/deploy-minio-tenant` guide to create a 
-MinIO Tenant for early development and evaluation of MinIO Object Storage 
-in Kubernetes.
+- :ref:`deploy-operator-kubernetes`
+- :ref:`deploy-minio-tenant-commandline`
 
 .. toctree::
    :titlesonly:
    :hidden:
 
    /core-concepts/core-concepts
-   /tutorials/deploy-minio-tenant
-   /tutorials/manage-minio-tenant
+   /deployment/deploy-minio-operator
+   /tenant-management/deploy-minio-tenant
+   /tenant-management/manage-minio-tenant
    /security/security
    /reference/production-recommendations
 
