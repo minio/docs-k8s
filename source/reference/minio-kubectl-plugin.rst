@@ -35,6 +35,7 @@ to Kubernetes clusters using the ``kubectl`` CLI. You can use
 Installing :mc:`kubectl minio` implies installing the
 :minio-git:`MinIO Kubernetes Operator <minio-operator>`.
 
+.. _minio-plugin-installation:
 
 Installation
 ------------
