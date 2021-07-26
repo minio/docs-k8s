@@ -42,6 +42,7 @@ Getting Started
 
    /core-concepts/core-concepts
    /deployment/deploy-minio-operator
+   /openshift/deploy-minio-on-openshift
    /tenant-management/deploy-minio-tenant
    /tenant-management/manage-minio-tenant
    /security/security

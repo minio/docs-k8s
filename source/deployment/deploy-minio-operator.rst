@@ -212,9 +212,3 @@ The output resembles the following:
 ~~~~~~~~~~~~~
 
 - :ref:`deploy-minio-tenant-commandline`
-
-.. toctree::
-   :titlesonly:
-   :hidden:
-
-   /deployment/deploy-minio-on-openshift
