@@ -63,7 +63,7 @@ extlinks = {
     's3-docs'           : ('https://docs.aws.amazon.com/AmazonS3/latest/dev/%s',''),
     's3-api'            : ('https://docs.aws.amazon.com/AmazonS3/latest/API/%s',''),
     'iam-docs'          : ('https://docs.aws.amazon.com/IAM/latest/UserGuide/%s',''),
-    'release'           : ('https://github.com/minio/mc/releases/tag/%s',''),
+    'release'           : ('https://github.com/minio/minio/releases/tag/%s',''),
     'legacy'            : ('https://docs.min.io/docs/%s',''),
     'minio-crd'         : ('https://github.com/minio/operator/blob/master/docs/crd.adoc#%s', ''),
     'baremetal'         : ('https://docs.min.io/minio/baremetal/%s.html',''),
@@ -133,7 +133,7 @@ rst_epilog = """
 
 rst_prolog = """
 
-.. |operator-version-stable| replace:: v4.1.1
+.. |operator-version-stable| replace:: 4.1.3
 
 """
 

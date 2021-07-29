@@ -15,9 +15,9 @@ MinIO enforces authentication and authorization for all incoming requests.
 Administrators can use the MinIO Console *or* an S3-compatible command-line tool 
 such as ``mc`` for configuring IAM on a MinIO Tenant.
 
-These pages document MinIO IAM in context of MinIO Tenants on Kubernetes. 
-See :baremetal:`MinIO Identity and Access Management 
-<security/IAM/identity-access-management>` for more complete documentation.
+These pages document MinIO IAM in context of MinIO Tenants on Kubernetes. See
+:ref:`baremetal:minio-authentication-and-identity-management` for more complete
+documentation.
 
 .. _minio-k8s-identity-management:
 
@@ -47,7 +47,7 @@ list includes common identity management procedures:
 - :ref:`minio-k8s-change-user-password`
 - :ref:`minio-k8s-create-service-account`
 
-See :baremetal:`MinIO Users <security/IAM/iam-users>` for more complete 
+See :ref:`MinIO Users <baremetal:minio-users>` for more complete 
 documentation on MinIO Users.
 
 .. _minio-k8s-access-management:
@@ -92,8 +92,8 @@ procedures:
 - :ref:`minio-k8s-attach-user-policy`
 - :ref:`minio-k8s-create-new-policy`
 
-See :baremetal:`MinIO Groups <security/IAM/iam-groups>` and 
-:baremetal:`MinIO Policies <security/IAM/iam-policies>` for more complete 
+See :ref:`MinIO Groups <baremetal:minio-groups>` and 
+:ref:`MinIO Policies <baremetal:minio-policy>` for more complete 
 documentation on MinIO Groups and Policies.
 
 Encryption and Key Management

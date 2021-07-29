@@ -201,18 +201,23 @@ for your system architecture. Set the file permissions to allow executing the
 binary and move it to your system ``$PATH``. 
 
 The following code downloads the latest stable version |operator-version-stable|
-for ARM64 Linux distributions, sets the binary to executable, and copies it to
-the system ``$PATH``:  
+of the MinIO Kubernetes Plugin and installs it to the system ``$PATH``:
 
-.. parsed-literal::
+.. code-block:: shell
+   :substitutions:
    :class: copyable
 
-   wget https://github.com/minio/operator/releases/download/v4.1.1/kubectl-minio_4.1.1_linux_amd64
-   chmod ~x kubectl-minio
+   wget https://github.com/minio/operator/releases/download/v|operator-version-stable|/kubectl-minio_|operator-version-stable|_linux_amd64 -O kubectl-minio
+   chmod +x kubectl-minio
    mv kubectl-minio /usr/local/bin/
 
-Replace the ``wget`` URL with the appropriate executable from the 
-latest stable :minio-git:`release <operator/releases/>`.
+You can access the plugin using the :mc:`kubectl minio` command. Run 
+the following command to verify installation of the plugin:
+
+.. code-block:: shell
+   :class: copyable
+
+   kubectl minio version
 
 .. toctree::
    :titlesonly:

@@ -56,16 +56,6 @@ Prior to v4.0.0, the MinIO Operator and Plugin required Kubernetes 1.17.0. You
 *must* upgrade your Kubernetes infrastructure to 1.19.0 or later to use 
 the MiNIO Operator or Plugin v4.0.0 or later.
 
-Kubernetes ``krew``
-~~~~~~~~~~~~~~~~~~~
-
-This procedure uses the Kubernetes ``krew`` plugin manager for installing the 
-MinIO Kubernetes Operator and Plugin. 
-
-See the ``krew`` `installation documentation 
-<https://krew.sigs.k8s.io/docs/user-guide/setup/install/>`__ for specific 
-instructions on installation.
-
 Kubernetes TLS Certificate API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -140,14 +130,24 @@ Procedure
 1) Install the MinIO Kubernetes Operator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Run the following commands to install the MinIO Operator and Plugin using the 
-Kubernetes ``krew`` plugin manager:
+The following code downloads the latest stable version |operator-version-stable|
+of the MinIO Kubernetes Plugin and installs it to the system ``$PATH``:
+
+.. code-block:: shell
+   :substitutions:
+   :class: copyable
+
+   wget https://github.com/minio/operator/releases/download/v|operator-version-stable|/kubectl-minio_|operator-version-stable|_linux_amd64 -O kubectl-minio
+   chmod +x kubectl-minio
+   mv kubectl-minio /usr/local/bin/
+
+You can access the plugin using the :mc:`kubectl minio` command. Run 
+the following command to verify installation of the plugin:
 
 .. code-block:: shell
    :class: copyable
 
-   kubectl krew update
-   kubectl krew install minio
+   kubectl minio version
 
 2) Initialize the MinIO Kubernetes Operator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

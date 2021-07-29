@@ -33,7 +33,7 @@ to Kubernetes clusters using the ``kubectl`` CLI. You can use
    :alt: Kubernetes Orchestration with the MinIO Operator facilitates automated deployment of MinIO clusters.
 
 Installing :mc:`kubectl minio` implies installing the
-:minio-git:`MinIO Kubernetes Operator <minio-operator>`.
+:minio-git:`MinIO Kubernetes Operator <operator>`.
 
 .. _minio-plugin-installation:
 
@@ -42,32 +42,24 @@ Installation
 
 The MinIO Kubernetes Plugin requires Kubernetes 1.19.0 or later:
 
-**Prerequisite**
+The following code downloads the latest stable version |operator-version-stable|
+of the MinIO Kubernetes Plugin and installs it to the system ``$PATH``:
 
-Install the `krew <https://github.com/kubernetes-sigs/krew>`__ ``kubectl`` 
-plugin manager using the `documented installation procedure
-<https://krew.sigs.k8s.io/docs/user-guide/setup/install/>`__. 
+.. code-block:: shell
+   :substitutions:
+   :class: copyable
 
-Install Using ``krew``
-~~~~~~~~~~~~~~~~~~~~~~
+   wget https://github.com/minio/operator/releases/download/v|operator-version-stable|/kubectl-minio_|operator-version-stable|_linux_amd64 -O kubectl-minio
+   chmod +x kubectl-minio
+   mv kubectl-minio /usr/local/bin/
 
-Run the following command to install :mc:`kubectl minio` using ``krew``:
+You can access the plugin using the :mc:`kubectl minio` command. Run 
+the following command to verify installation of the plugin:
 
 .. code-block:: shell
    :class: copyable
 
-   kubectl krew update
-   kubectl krew install minio
-
-Update Using ``krew``
-~~~~~~~~~~~~~~~~~~~~~
-
-Run the following command to update :mc:`kubectl minio`:
-
-.. code-block:: shell
-   :class: copyable
-
-   kubectl krew upgrade
+   kubectl minio version
 
 MinIO Kubernetes Plugin Syntax
 ------------------------------
@@ -97,7 +89,7 @@ Create the MinIO Operator
 
       The image to use for deploying the operator. 
       Defaults to the :minio-git:`latest release of the operator
-      <minio/operator/releases/latest>`.
+      <operator/releases/latest>`.
 
    .. mc-cmd:: namespace
       :option:
@@ -133,7 +125,7 @@ Create the MinIO Operator
       :option:
 
       The image to use when deploying the
-      :minio-git:`MinIO console` in Operator mode, where administrators can 
+      :minio-git:`MinIO Console <console>` in Operator mode, where administrators can 
       create and manage MinIO tenants using a Graphical User Interface.
 
       Defaults to ``minio/console:v0.7.4``.
@@ -141,19 +133,19 @@ Create the MinIO Operator
    .. mc-cmd:: default-minio-image
       :option:
 
-      The default :minio-git:`minio` image to use when creating a new MinIO 
-      tenant. Defaults to ``minio/minio:RELEASE.2021-06-07T21-40-51Z``.
+      The default :minio-git:`minio <minio>` image to use when creating a new
+      MinIO tenant. Defaults to ``minio/minio:RELEASE.2021-06-07T21-40-51Z``.
 
    .. mc-cmd:: default-console-image
       :option:
 
-      The default :minio-git:`console` image to use when creating a new MinIO 
-      tenant. Defaults to ``minio/console:v0.7.4``.
+      The default :minio-git:`MinIO Console <console>` image to use when
+      creating a new MinIO tenant. Defaults to ``minio/console:v0.7.4``.
 
    .. mc-cmd:: default-kes-image
       :option:
 
-      The default :minio-git:`kes` image to use when creating a new MinIO 
+      The default :minio-git:`kes <kes>` image to use when creating a new MinIO
       tenant. Defaults to ``minio/kes:v0.14.0``.
 
    .. mc-cmd:: output

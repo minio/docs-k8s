@@ -46,37 +46,33 @@ Prior to v4.0.0, the MinIO Operator and Plugin required Kubernetes 1.17.0. You
 *must* upgrade your Kubernetes infrastructure to 1.19.0 or later to use 
 the MiNIO Operator or Plugin v4.0.0 or later.
 
-Kubernetes ``krew``
-~~~~~~~~~~~~~~~~~~~
-
-This procedure uses the Kubernetes ``krew`` plugin manager for installing the 
-MinIO Kubernetes Plugin. 
-
-See the ``krew`` `installation documentation 
-<https://krew.sigs.k8s.io/docs/user-guide/setup/install/>`__ for specific 
-instructions on installation.
-
 Procedure
 ---------
 
 1) Install the MinIO Plugin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Optional*
+The following code downloads the latest stable version |operator-version-stable|
+of the MinIO Kubernetes Plugin and installs it to the system ``$PATH``:
 
-Run the following command to install the MinIO Kubernetes Plugin
-|operator-version-stable| using ``krew``:
+.. code-block:: shell
+   :substitutions:
+   :class: copyable
+
+   wget https://github.com/minio/operator/releases/download/v|operator-version-stable|/kubectl-minio_|operator-version-stable|_linux_amd64 -O kubectl-minio
+   chmod +x kubectl-minio
+   mv kubectl-minio /usr/local/bin/
+
+You can access the plugin using the :mc:`kubectl minio` command. Run 
+the following command to verify installation of the plugin:
 
 .. code-block:: shell
    :class: copyable
 
-   kubectl krew update
-   kubectl krew install minio
-
-You can access the plugin using the :mc:`kubectl minio` command.
+   kubectl minio version
 
 You can skip this step if the MinIO Plugin is installed on the host machine.
-Use :mc:`kubectl minio --help <kubectl minio>` to check whether the plugin
+Use :mc:`kubectl minio version <kubectl minio>` to check whether the plugin
 is already installed.
 
 2) Configure the Persistent Volumes
@@ -238,9 +234,7 @@ MinIO supports exactly *one* Tenant per namespace.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Use the :mc-cmd:`kubectl minio tenant create` command to create the MinIO
-Tenant. The command always uses the latest stable Docker image of the 
-:github:`MinIO Server <minio/releases>` and 
-:github:`MinIO Console <console/releases>`.
+Tenant.
 
 The following example creates a 4-node MinIO deployment with a
 total capacity of 16Ti across 16 drives.
