@@ -47,5 +47,6 @@ Getting Started
    /tenant-management/manage-minio-tenant
    /security/security
    /reference/production-recommendations
+   /operator-console/operator-console
 
 

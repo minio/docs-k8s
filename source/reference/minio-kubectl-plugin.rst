@@ -190,6 +190,30 @@ Delete the MinIO Operator
 
       Defaults to ``minio-operator``.
 
+Access the MinIO Operator Console
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. include:: /includes/facts-kubectl-plugin.rst
+   :start-after: start-kubectl-minio-requires-operator-desc
+   :end-before: end-kubectl-minio-requires-operator-desc
+
+.. mc-cmd:: proxy
+   :fullpath:
+
+   Create a temporary proxy to forward traffic from the local host machine 
+   to the MinIO Operator Console. The Operator Console provides a rich 
+   user interface for deploying and managing MinIO Tenants.
+
+   This command is an alternative to configuring Ingress to grant access to the 
+   Operator Console pods.
+
+   The command has the following syntax:
+
+   .. code-block:: shell
+      :class: copyable
+
+      kubectl minio proxy
+
 Create a MinIO Tenant
 ~~~~~~~~~~~~~~~~~~~~~
 
