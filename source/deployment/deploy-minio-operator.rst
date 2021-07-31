@@ -54,7 +54,7 @@ Kubernetes 1.19.0 and later. The Kubernetes infrastructure *and* the
 
 Prior to v4.0.0, the MinIO Operator and Plugin required Kubernetes 1.17.0. You 
 *must* upgrade your Kubernetes infrastructure to 1.19.0 or later to use 
-the MiNIO Operator or Plugin v4.0.0 or later.
+the MinIO Operator or Plugin v4.0.0 or later.
 
 Kubernetes TLS Certificate API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -211,4 +211,5 @@ The output resembles the following:
 4) Next Steps
 ~~~~~~~~~~~~~
 
+- :ref:`deploy-minio-tenant`
 - :ref:`deploy-minio-tenant-commandline`

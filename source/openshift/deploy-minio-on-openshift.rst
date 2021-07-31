@@ -191,9 +191,9 @@ After deploying the MinIO Operator, you can create a new MinIO Tenant.
 To deploy a MinIO Tenant using OpenShift, see 
 :ref:`deploy-minio-tenant-redhat-openshift`.
 
-To deploy a MinIO Tenant using the MinIO Kubernetes Plugin, 
-see :ref:`deploy-minio-tenant-commandline`. Substitute ``oc`` for 
-``kubectl`` throughout that procedure.
+You can also deploy a Tenant using the MinIO Operator Console. See
+:ref:`deploy-minio-tenant`. Substitute ``oc`` for ``kubectl`` throughout that
+procedure.
 
 If the local host does not have the MinIO Kubernetes Plugin installed,
 download the latest :minio-git:`kubectl-minio release <operator/releases/>`
