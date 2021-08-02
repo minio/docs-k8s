@@ -140,3 +140,7 @@ rst_prolog = """
 intersphinx_mapping = {
     'baremetal': ('https://docs.min.io/minio/baremetal/', None)
 }
+
+# -- Options for Sphinx Tabs -------------------------------------------------
+
+sphinx_tabs_disable_css_loading = True
