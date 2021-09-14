@@ -56,6 +56,16 @@ Prior to v4.0.0, the MinIO Operator and Plugin required Kubernetes 1.17.0. You
 *must* upgrade your Kubernetes infrastructure to 1.19.0 or later to use 
 the MinIO Operator or Plugin v4.0.0 or later.
 
+Kubernetes ``krew``
+~~~~~~~~~~~~~~~~~~~
+
+This procedure uses the Kubernetes ``krew`` plugin manager for installing the 
+MinIO Kubernetes Operator and Plugin. 
+
+See the ``krew`` `installation documentation 
+<https://krew.sigs.k8s.io/docs/user-guide/setup/install/>`__ for specific 
+instructions.
+
 Kubernetes TLS Certificate API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -130,8 +140,19 @@ Procedure
 1) Install the MinIO Kubernetes Operator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following code downloads the latest stable version |operator-version-stable|
-of the MinIO Kubernetes Plugin and installs it to the system ``$PATH``:
+Run the following commands to install the MinIO Operator and Plugin using the 
+Kubernetes ``krew`` plugin manager:
+
+.. code-block:: shell
+   :class: copyable
+
+   kubectl krew update
+   kubectl krew install minio
+
+You can also download the ``kubectl-minio`` plugin directly and install it to
+your system ``PATH``. The following code downloads the latest stable version
+|operator-version-stable| of the MinIO Kubernetes Plugin and installs it to the
+system ``$PATH``:
 
 .. code-block:: shell
    :substitutions:
@@ -141,15 +162,16 @@ of the MinIO Kubernetes Plugin and installs it to the system ``$PATH``:
    chmod +x kubectl-minio
    mv kubectl-minio /usr/local/bin/
 
-You can access the plugin using the :mc:`kubectl minio` command. Run 
-the following command to verify installation of the plugin:
+Run the following command to verify installation of the plugin:
 
 .. code-block:: shell
    :class: copyable
 
    kubectl minio version
 
-2) Initialize the MinIO Kubernetes Operator
+The output should display the Operator version as |operator-version-stable|.
+
+1) Initialize the MinIO Kubernetes Operator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Run the :mc:`kubectl minio init` command to initialize the MinIO Operator:
@@ -211,5 +233,4 @@ The output resembles the following:
 4) Next Steps
 ~~~~~~~~~~~~~
 
-- :ref:`deploy-minio-tenant`
 - :ref:`deploy-minio-tenant-commandline`

@@ -45,11 +45,23 @@ the MinIO Operator.
 MinIO Kubernetes Plugin |operator-version-stable|
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This procedure requires using the MiniO Kubernetes Plugin
-|operator-version-stable|.
+Run the following commands to install the MinIO Operator and Plugin using the 
+Kubernetes ``krew`` plugin manager:
 
-The following code downloads the latest stable version |operator-version-stable|
-of the MinIO Kubernetes Plugin and installs it to the system ``$PATH``:
+.. code-block:: shell
+   :class: copyable
+
+   kubectl krew update
+   kubectl krew install minio
+
+See the ``krew`` `installation documentation 
+<https://krew.sigs.k8s.io/docs/user-guide/setup/install/>`__ for specific 
+instructions.
+
+You can also download the ``kubectl-minio`` plugin directly and install it to
+your system ``PATH``. The following code downloads the latest stable version
+|operator-version-stable| of the MinIO Kubernetes Plugin and installs it to the
+system ``$PATH``:
 
 .. code-block:: shell
    :substitutions:
@@ -59,13 +71,14 @@ of the MinIO Kubernetes Plugin and installs it to the system ``$PATH``:
    chmod +x kubectl-minio
    mv kubectl-minio /usr/local/bin/
 
-You can access the plugin using the :mc:`kubectl minio` command. Run 
-the following command to verify installation of the plugin:
+Run the following command to verify installation of the plugin:
 
 .. code-block:: shell
    :class: copyable
 
    kubectl minio version
+
+The output should display the Operator version as |operator-version-stable|.
 
 Kubernetes Version 1.19.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~
