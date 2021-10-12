@@ -42,11 +42,11 @@ client making a request against a matching domain.
 The Operator also supports specifying Certificate Authorities (CA) used by the
 MinIO Tenant for validating the x.509 certificates of external services.
 
-See the :minio-git:`Operator Example on Tenants with Custom Certificates 
-<operator/blob/master/examples/tenant-with-custom-ca-certs.yaml>` for an 
-example Tenant specification object that implements custom certificates.
+You can specify custom TLS certificates while deploying a tenant using the 
+:ref:`MinIO Operator Console <deploy-minio-tenant>`. 
 
-The following table lists a subset of MinIO Tenant object specification fields
+For users deploying MinIO Tenants using YAML object specifications, the 
+following table lists a subset of MinIO Tenant object specification fields
 for specifying user-generated x.509 certificates or Certificate Authorities
 (CA):
 
