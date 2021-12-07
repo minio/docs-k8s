@@ -171,7 +171,7 @@ Run the following command to verify installation of the plugin:
 
 The output should display the Operator version as |operator-version-stable|.
 
-1) Initialize the MinIO Kubernetes Operator
+2) Initialize the MinIO Kubernetes Operator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Run the :mc:`kubectl minio init` command to initialize the MinIO Operator:
@@ -230,7 +230,27 @@ The output resembles the following:
    replicaset.apps/console-59b769c486          1         1         1       81m
    replicaset.apps/minio-operator-7976b4df5b   1         1         1       81m
 
-4) Next Steps
-~~~~~~~~~~~~~
+4) Open the Operator Console
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- :ref:`deploy-minio-tenant-commandline`
+Run the :mc:`kubectl minio proxy` command to temporarily forward traffic from
+the :ref:`MinIO Operator Console <minio-operator-console>` service to your 
+local machine:
+
+.. code-block:: shell
+   :class: copyable
+
+   kubectl minio proxy
+
+
+The command output includes a JWT token you must use to log into the
+Operator Console. 
+
+.. image:: /images/operator-console/operator-dashboard.png
+   :align: center
+   :width: 70%
+   :class: no-scaled-link
+   :alt: MinIO Operator Console
+
+You can deploy a new :ref:`MinIO Tenant <deploy-minio-tenant-commandline>` from
+the Operator Dashboard.

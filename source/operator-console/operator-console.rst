@@ -15,7 +15,7 @@ managing MinIO Tenants on Kubernetes infrastructure. Installing the
 MinIO :ref:`Kubernetes Operator <deploy-operator-kubernetes>` automatically
 installs and configures the Operator Console.
 
-.. image:: /images/operator-console/operator-tenant-list.png
+.. image:: /images/operator-console/operator-dashboard.png
    :align: center
    :width: 70%
    :class: no-scaled-link
@@ -50,7 +50,7 @@ Tenant Management
 The MinIO Operator Console supports deploying, managing, and monitoring 
 MinIO Tenants on the Kubernetes cluster.
 
-.. image:: /images/operator-console/operator-tenant-list.png
+.. image:: /images/operator-console/operator-dashboard.png
    :align: center
    :width: 70%
    :class: no-scaled-link
@@ -63,20 +63,40 @@ The Operator Console automatically detects any MinIO Tenants
 deployed on the cluster, whether provisioned through the Operator Console 
 or through the :ref:`MinIO Kubernetes Plugin <deploy-minio-tenant-commandline>`.
 
-You can monitor each Tenant from the Console by clicking the 
-:guilabel:`METRICS` tab:
+For each listed tenant, select :guilabel:`MANAGE` to open an in-browser
+view of that tenant's MinIO Console. You can use this view to directly manage
+the tenant through the Operator UI.
 
-.. image:: /images/operator-console/operator-tenant-metrics.png
+.. image:: /images/operator-console/operator-manage-tenant.png
    :align: center
    :width: 70%
    :class: no-scaled-link
-   :alt: MinIO Operator Console Metrics
+   :alt: MinIO Operator Tenant Console
+
+Select :guilabel:`VIEW` to view the Tenant details and configurations. 
+You can modify, expand, upgrade, and delete the Tenant from this view.
+
+.. image:: /images/operator-console/operator-tenant-view.png
+   :align: center
+   :width: 70%
+   :class: no-scaled-link
+   :alt: MinIO Operator Tenant View
 
 Persistent Volume Management
 ----------------------------
 
 The MinIO Operator Console includes an interface for managing 
-:minio-git:`MinIO DirectCSI <direct-csi>` drives and volumes. 
+storage volumes and volume claims associated to MinIO Tenants. 
+
+- The :guilabel:`Volumes` tab displays all Persistent Volume Claims generated
+  for Tenants managed by the MinIO Operator.
+
+
+- The :guilabel:`Drives` tab displays any locally attached drives that are
+  currently managed or eligible for management by :minio-git:`MinIO DirectCSI
+  <direct-csi>`.
+  
+
 MinIO DirectCSI supports dynamic provisioning of persistent volumes from 
 locally-attached storage. DirectCSI manages allocation of volumes based 
 on storage capacity and schedules pods to run on nodes which have the 
@@ -84,28 +104,8 @@ most available capacity. See the :minio-git:`DirectCSI Documentation
 <direct-csi/blob/master/README.md>` for installation and configuration
 instructions.
 
-If the Kubernetes cluster has DirectCSI installed, you can access the 
-interface by clicking :guilabel:`Storage` in the left-navigation.
-
-The :guilabel:`DRIVES` tab displays all locally-attached drives in the 
-cluster and their current status. 
-
-.. image:: /images/operator-console/direct-csi-drives.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: MinIO Operator DirectCSI
-
-The :guilabel:`VOLUMES` tab displays all DirectCSI-provisioned 
-Persistent Volumes in the cluster.
-
-.. image:: /images/operator-console/direct-csi-volumes.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: MinIO Operator DirectCSI Volumes
-
 You can use DirectCSI for any Kubernetes service that can take advantage of
 dynamically provisioned locally-attached storage by specifying the
 ``direct-csi-min-io`` :kube-docs:`StorageClass
 <concepts/storage/storage-classes/>` as part of the Persistent Volume Claim.
+
