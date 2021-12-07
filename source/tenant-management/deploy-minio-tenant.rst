@@ -13,7 +13,7 @@ Deploy a MinIO Tenant
 This procedure documents deploying a MinIO Tenant using the 
 MinIO Operator Console.
 
-.. image:: /images/operator-console/operator-tenant-list.png
+.. image:: /images/operator-console/operator-dashboard.png
    :align: center
    :width: 70%
    :class: no-scaled-link
@@ -173,7 +173,7 @@ The command returns output similar to the following:
 Open your browser to the specified URL and enter the JWT Token into the 
 login page. You should see the :guilabel:`Tenants` page:
 
-.. image:: /images/operator-console/operator-tenant-list.png
+.. image:: /images/operator-console/operator-dashboard.png
    :align: center
    :width: 70%
    :class: no-scaled-link
@@ -181,215 +181,335 @@ login page. You should see the :guilabel:`Tenants` page:
 
 Click the :guilabel:`+ Create Tenant` to start creating a MinIO Tenant.
 
-2) Complete the :guilabel:`Name Tenant` Step
+2) Complete the Tenant :guilabel:`Setup`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :guilabel:`Setup` pane contains all core configuration settings for the
+MinIO Tenant. 
+
+Settings marked with an asterisk :guilabel:`*` are *required*:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+   :width: 100%
+
+   * - Field
+     - Description
+
+   * - :guilabel:`Name`
+     - The name of the MinIO Tenant
+
+   * - :guilabel:`Namespace`
+     - The Kubernetes Namespace in which to deploy the tenant. You can create
+       the namespace by selecting the plus :guilabel:`+` icon if it does not
+       exist.
+
+       The Operator supports at most *one* MinIO Tenant per namespace.
+
+   * - :guilabel:`Storage Class`
+     - Specify the Kubernetes Storage Class the Operator uses when generating
+       Persistent Volume Claims for the Tenant. 
+
+       This procedure assumes using the :minio-git:`DirectCSI <direct-csi>`
+       storage class ``direct-csi-min-io``. See the 
+       :minio-git:`DirectCSI Documentation <direct-csi/blob/master/README.md>`
+       for installation and configuration instructions.
+
+   * - :guilabel:`Number of Servers`
+     - The total number of MinIO server pods to deploy in the Tenant.
+       
+       The Operator by default uses pod anti-affinity, such that the Kubernetes
+       cluster *must* have at least one worker node per MinIO server pod. Use
+       the :guilabel:`Pod Placement` pane to modify the pod scheduling 
+       settings for the Tenant.
+
+   * - :guilabel:`Number of Drives per Server`
+     - The number of storage volumes (Persistent Volume Claims) the Operator
+       requests per Server. 
+
+       The Operator displays the :guilabel:`Total Volumes` under the
+       :guilabel:`Resource Allocation` section. The Operator generates an equal
+       number of PVC *plus two* for supporting Tenant services (Metrics and
+       Log Search).
+       
+       The specified :guilabel:`Storage Class` *must* correspond to a set of
+       Persistent Volumes sufficient in number to match each generated PVC.
+
+   * - :guilabel:`Total Size`
+     - The total raw storage size for the Tenant. Specify both the total
+       storage size *and* the :guilabel:`Unit` of that storage. All storage
+       units are in SI values, e.g. Gi = GiB = 1024\ :sup:`3` bytes.
+
+       The Operator displays the :guilabel:`Drive Capacity` under the
+       :guilabel:`Resource Allocation` section. The Operator sets this value
+       as the requested storage capacity in each generated PVC.
+
+       The specified :guilabel:`Storage Class` *must* correspond to a set of
+       Persistent Volumes sufficient in capacity to match each generated PVC.
+
+   * - :guilabel:`Memory per Node [Gi]`
+     - Specify the total amount of memory (RAM) to allocate per MinIO server 
+       pod. See :ref:`minio-k8s-production-considerations-memory` for guidance
+       on setting this value.
+
+       The Kubernetes cluster *must* have worker nodes with sufficient free
+       RAM to match the pod request.
+
+   * - :guilabel:`Erasure Code Parity`
+     - The Erasure Code Parity to set for the deployment.
+
+       The Operator displays the selected parity and its effect on the
+       deployment under the :guilabel:`Erasure Code Configuration` section.
+       Erasure Code parity defines the overall resiliency and availability of
+       data on the cluster. Higher parity values increase tolerance to drive or
+       node failure at the cost of total storage. See
+       :ref:`minio-erasure-coding` for more complete documentation.
+       
+Select :guilabel:`Create` to create the Tenant using the current configuration.
+While all subsequent sections are *optional*, MinIO recommends reviewing them
+prior to deploying the Tenant.
+
+3) The :guilabel:`Configure` Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :guilabel:`Configure` section contains optional configuration settings for
+the MinIO Tenant and its supporting services.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+   :width: 100%
+
+   * - Field
+     - Description
+
+   * - :guilabel:`Expose Services`
+     - The MinIO Operator by default directs the MinIO Tenant services to
+       request an externally accessible IP address from the Kubernetes cluster
+       Load Balancer if one is available.
+
+       Most public cloud Kubernetes infrastructures include a global Load
+       Balancer which meets this requirements. Other Kubernetes distributions
+       *may* include a load balancer that can respond to these requests.
+
+       You can direct the Tenant to not make this request by toggling the
+       option to :guilabel:`Off` for the MinIO Service and Console Service.
+
+   * - :guilabel:`Override Tenant Defaults`
+     - The MinIO Operator sets the Kubernetes Security Context for pods to
+       a default of ``1000`` for User, Group, and FsGroup. MinIO runs the
+       pod using the ``root`` user.
+
+       You can modify the Security Context to direct MinIO to run using a
+       different User, Group, or FsGroup ID. You can also direct MinIO to not
+       run as the Root user.
+
+   * - :guilabel:`Override Log Search Defaults`
+     - The MinIO Operator deploys a Log Search service (SQL Database and
+       Log Search API) to support Audit Log search in the MinIO Tenant Console.
+
+       You can modify the Security Context to run the associated pod commands
+       using a different User, Group, or FsGroup ID. You can also direct the pod
+       to not run commands as the Root user.
+
+       You can also modify the storage class and requested capacity associated
+       to the PVC generated to support the Log Search service.
+
+   * - :guilabel:`Override Prometheus Search Defaults`
+     - The MinIO Operator deploys a Prometheus service to support detailed
+       metrics in the MinIO Tenant Console.
+
+       You can modify the Security Context to run the associated pod commands
+       using a different User, Group, or FsGroup ID. You can also direct the pod
+       to not run commands as the Root user.
+
+       You can also modify the storage class and requested capacity associated
+       to the PVC generated to support the Prometheus service.
+
+4) The :guilabel:`Images` Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :guilabel:`Images` section contains container image settings used by the
+MinIO Tenant.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+   :width: 100%
+
+   * - Field
+     - Description
+
+   * - :guilabel:`MinIO's Image`
+     - The container image to use for the MinIO Server. See the
+       `MinIO Quay <https://quay.io/repository/minio/minio>`__
+       or the
+       `MinIO DockerHub <https://hub.docker.com/r/minio/minio/tags>`__
+       repositories for a list of valid tags.
+
+   * - :guilabel:`Log Search API's Image`
+     - The container image to use for MinIO Log Search API.
+
+   * - :guilabel:`KES Image`
+     - The container image to use for MinIO :minio-git:`KES <kes>`.
+
+   * - | :guilabel:`Log Search Postgres Image`
+       | :guilabel:`Log Search Postgres Init Image`
+     - The container images to use for starting the PostgreSQL service
+       supporting the Log Search API
+
+   * - | :guilabel:`Prometheus Image`
+       | :guilabel:`Prometheus Sidecar Image`
+       | :guilabel:`Prometheus Init Image`
+
+     - The container images to use for starting the Prometheus service
+       supporting the Log Search API.
+
+5) The :guilabel:`Pod Placement` Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :guilabel:`Pod Placement` section contains pod scheduler settings for the
+MinIO Tenant.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+   :width: 100%
+
+   * - Field
+     - Description
+
+   * - :guilabel:`None`
+     - Disables pod scheduling constraints for the tenant. This allows
+       Kubernetes to schedule multiple Tenant pods onto the same node.
+
+       This may decrease resiliency, as a single Kubernetes worker can host
+       multiple MinIO pods. If that worker is down or lost, objects
+       may also unavailable or lost.
+
+       Consider using this setting only in early development or sandbox
+       environments with a limited number of worker nodes.
+
+   * - :guilabel:`Default (Pod Anti-Affinity)`
+     - Directs the Operator to set anti-affinity settings such that no
+       Kubernetes worker can host more than one MinIO server pod for this
+       Tenant.
+
+   * - :guilabel:`Node Selector`
+     - Directs the operator to set a Node Selector such that pods only deploy
+       onto Kubernetes workers whose labels match the selector.
+
+6) The :guilabel:`Identity Provider` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :guilabel:`i. Name Tenant` step contains configuration settings 
-related to the Tenant :guilabel:`Name`, :guilabel:`Namespace`, and
-:guilabel:`Storage Class`.
+The :guilabel:`Identity Provider` section contains
+the :ref:`Identity Provider <minio-authentication-and-identity-management>` 
+settings for the MinIO Tenant. This includes configuring an external IDP such as
+:ref:`OpenID <minio-external-identity-management-openid>` or 
+:ref:`Active Directory / LDAP <minio-external-identity-management-ad-ldap>`.
 
-.. image:: /images/operator-console/create-new-tenant-1-name-tenant.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: Add Tenant Step 1: Name Tenant
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+   :width: 100%
 
-The specified :guilabel:`Namespace` must *not* contain any existing MinIO 
-Tenants. Consider creating a new Namespace for the MinIO Tenant. 
-You can create the namespace through the UI by entering the desired 
-name and clicking the :guilabel:`+` icon.
+   * - Field
+     - Description
 
-This procedure assumes using the :minio-git:`DirectCSI <direct-csi>` 
-storage class ``direct-csi-min-io``. See the :minio-git:`DirectCSI Documentation
-<direct-csi/blob/master/README.md>` for installation and configuration
-instructions.
+   * - :guilabel:`Built-In`
+     - Configure additional internal MinIO users for the Operator to create
+       as part of deploying the Tenant.
 
-The :guilabel:`Advanced Mode` toggle enables additional configuration 
-options for the MinIO Tenant. This procedure provides a high level 
-description of each of the advanced configuration sections.
+   * - :guilabel:`OpenID`
+     - Configure an OpenID Connect-compatible servce as an external Identity
+       Provider (e.g. Keycloak, Okta, Google, Facebook, Dex) to manage MinIO
+       users. 
 
-Click :guilabel:`Next` to proceed.
+   * - :guilabel:`Active Directory`
+     - Configure an Active Directory or OpenLDAP service as the external
+       Identity Provider to manage MinIO users.
 
-3) Complete the :guilabel:`Configure` Step
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+7) The :guilabel:`Security` Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :guilabel:`ii. Configure` step contains configuration settings 
-related to the MinIO Tenant. This step is only visible if you 
-enabled :guilabel:`Advanced Mode` in step :guilabel:`i. Name Tenant`.
+The :guilabel:`Security` section contains TLS certificate settings
+for the MinIO Tenant.
 
-.. image:: /images/operator-console/create-new-tenant-2-configure.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: Add Tenant Step 2: Configure
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+   :width: 100%
 
-4) Complete the :guilabel:`Pod Affinity` Step
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   * - Field
+     - Description
 
-The :guilabel:`iii. Pod Affinity` step contains configuration settings 
-related to scheduling MinIO Tenant Pods. This step is only visible if you 
-enabled :guilabel:`Advanced Mode` in step :guilabel:`i. Name Tenant`.
+   * - :guilabel:`Enable TLS`
+     - Enable or disable TLS for the MinIO Tenant. 
 
-.. image:: /images/operator-console/create-new-tenant-3-pod-affinity.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: Add Tenant Step 3: Pod Affinity
+   * - :guilabel:`Enable AutoCert`
+     - Directs the Operator to generate Certificate Signing Requests for
+       submission to the Kubernetes TLS API.
 
-Select the type of affinity rules you want to apply to the MinIO Tenant. 
-The default :guilabel:`Pod Anti-Affinity` ensures that no two MinIO 
-pods deploy to the same worker node.
+       The MinIO Tenant uses the generated certificates for enabling and
+       establishing TLS connections.
 
-5) Complete the :guilabel:`Identity Provider` Step
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   * - :guilabel:`Custom Certificates`
+     - Specify one or more custom TLS certificates for use by the MinIO Tenant.
+       
+       MinIO supports Server Name Indication (SNI) such that the Tenant can
+       select the appropriate TLS certificate based on the request hostname 
+       and the certificate Subject Alternative Name.
 
-The :guilabel:`iv. Identity Provider` step contains configuration settings
-related to MinIO :ref:`Identity and Access Management
-<baremetal:minio-authentication-and-identity-management>`. This step is only
-visible if you enabled :guilabel:`Advanced Mode` in step 
-:guilabel:`i. Name Tenant`.
+       MinIO also supports specifying Certificate Authority certificates for
+       validating client certificates minted by that CA.
 
-.. image:: /images/operator-console/create-new-tenant-4-identity-provider.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: Add Tenant Step 4: Identity Provider
+8) The :guilabel:`Encryption` Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The default :guilabel:`Built-In` provides configuration settings for the MinIO
-internal identity provider. See :ref:`MinIO Internal IDP
-<baremetal:minio-internal-idp>` for more complete documentation.
+The :guilabel:`Encryption` section contains the 
+:ref:`Server-Side Encryption <minio-sse>` settings for the MinIO Tenant. 
 
-You can also configure either an 
-:ref:`OpenID Connect <baremetal:minio-external-identity-management-openid>` or
-:ref:`Active Directory <baremetal:minio-external-identity-management-ad-ldap>`
-service as an external identity manager. See the linked documentation for more
-information on configuring MinIO for external identity management.
+Enabling SSE also deploys a MinIO :minio-git:`KES <kes>` service in the
+Tenant to faciliate SSE operations.
 
-.. important:: 
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+   :width: 100%
 
-   When configuring a MinIO Tenant to access a service external to the
-   Kubernetes cluster, you **must** configure Ingress such that the MinIO Tenant
-   has bidirectional network access to that service.
+   * - Field
+     - Description
+   
+   * - :guilabel:`Vault`
+     - Configure `Hashicorp Vault <https://www.vaultproject.io/>`__ as the
+       external KMS for storing root encryption keys. See :ref:`minio-sse-vault`
+       for guidance on the displayed fields.
 
-   The MinIO Operator does **not** configure Ingress as part of Tenant 
-   deployment.
+   * - :guilabel:`AWS`
+     - Configure 
+       `AWS Secrets Manager <https://aws.amazon.com/secrets-manager/>`__ as the
+       external KMS for storing root encryption keys. See 
+       :ref:`minio-sse-aws` for guidance on the displayed fields.
 
-6) Complete the :guilabel:`Security` Step
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   * - :guilabel:`GCP`
+     - Configure `Google Cloud Platform Secret Manager
+       <https://cloud.google.com/secret-manager/>`__ as the external KMS for
+       storing root encryption keys. See :ref:`minio-sse-gcp` for guidance on
+       the displayed fields.
 
-The :guilabel:`v. Security` step contains configuration settings related to
-MinIO Transport Layer Security (TLS). This step is only visible if you enabled
-:guilabel:`Advanced Mode` in step :guilabel:`i. Name Tenant`.
+   * - :guilabel:`Azure`
+     - Configure `Azure Key Vault
+       <https://azure.microsoft.com/en-us/services/key-vault/#product-overview>`__
+       as the external KMS for storing root encryption keys. See
+       :ref:`minio-sse-azure` for guidance on the displayed fields.       
 
-.. image:: /images/operator-console/create-new-tenant-5-security.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: Add Tenant Step 5: Security
+9) Deploy and View the Tenant
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The MinIO Operator automatically generates TLS certificates using the 
-Kubernetes ``certificates.k8s.io`` 
-:kube-docs:`TLS certificate management API 
-<tasks/tls/managing-tls-in-a-cluster/>`. You can disable this behavior 
-by toggling :guilabel:`Enable AutoCert`.
-
-You can provide one or more :guilabel:`Custom Certificates` for use by the 
-MinIO Tenant. MinIO supports Server Name Indication (SNI) support for 
-selecting which TLS certificate to respond with based on the hostname 
-specified in a client request. The Operator automatically distributes the 
-specified certificates to every server pod in the tenant.
-
-Disabling :guilabel:`AutoCert` *and* specifying no 
-:guilabel:`Custom Certificates` deploys the MinIO Tenant without TLS. 
-Consider the security risks of allowing unsecured traffic before deploying
-Tenants without TLS.
-
-7) Complete the :guilabel:`Encryption` Step
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :guilabel:`vi. Encryption` step contains configuration settings related to
-:ref:`MinIO Server-Side Object Encryption <baremetal:minio-sse>`. This step is
-only visible if you enabled :guilabel:`Advanced Mode` in step 
-:guilabel:`i. Name Tenant`.
-
-.. image:: /images/operator-console/create-new-tenant-6-encryption.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: Add Tenant Step 6: Encryption
-
-The Operator Console supports the following external Key Management Systems 
-(KMS):
-
-- Hashicorp Vault
-- Thales CipherTrust (formerly Gemalto KeySecure)
-- AWS KMS
-- GCP Secrets Manager
-
-For more complete documentation on the required fields, see 
-:minio-git:`MinIO KES Guides <kes/wiki#guides>`.
-
-.. important:: 
-
-   When configuring a MinIO Tenant to access a service external to the
-   Kubernetes cluster, you **must** configure Ingress such that the MinIO Tenant
-   has bidirectional network access to that service.
-
-   The MinIO Operator does **not** configure Ingress as part of Tenant 
-   deployment.
-
-8) Complete the :guilabel:`Tenant Size` Step
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :guilabel:`vii. Tenant Size` step contains configuration settings related 
-to the MinIO server pods deployed as part of the Tenant.
-
-.. image:: /images/operator-console/create-new-tenant-7-tenant-size.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: Add Tenant Step 7: Tenant Size
-
-- The :guilabel:`Resource Allocation` section displays the resulting 
-  compute configuration.
-
-- The :guilabel:`Erasure Code Configuration` section displays the resulting
-  :ref:`erasure code <baremetal:minio-erasure-coding>` configuration.
-
-You can also use the 
-MinIO `Erasure Code Calculator 
-<https://min.io/product/erasure-code-calculator?ref=docs>`__ to help guide 
-configuring the MinIO Tenant.
-
-9) Complete the :guilabel:`Preview Configuration` Step
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :guilabel:`viii. Preview Configuration` step displays a summary of 
-the Tenant configuration.
-
-.. image:: /images/operator-console/create-new-tenant-8-preview.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: Add Tenant Step 8: Preview Configuration
-
-Click :guilabel:`Create` to begin the Tenant creation process. You can return to
-any previous section to modify the Tenant configuration before proceeding.
-
-After clicking :guilabel:`Create`, the Operator Console displays the 
-root credentials for the MinIO Tenant.
-
-.. image:: /images/operator-console/create-new-tenant-9-credentials.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: Tenant Root Credentials
-
-Download and copy the credentials to a secure location. The Operator *never* 
-displays these credentials again.
-
-10) View Tenant Details
-~~~~~~~~~~~~~~~~~~~~~~~
+Select :guilabel:`Create` at any time to begin the deployment process. The
+MinIO Operator displays the root user credentials *once* as part of deploying
+the Tenant. Copy these credentials to a secure location.
 
 You can monitor the Tenant creation process from the 
 :guilabel:`Tenants` view. The :guilabel:`State` column updates throughout the 
@@ -399,7 +519,7 @@ Tenant deployment can take several minutes to complete. Once the
 :guilabel:`State` reads as :guilabel:`Initialized`, click the Tenant to view 
 its details.
 
-.. image:: /images/operator-console/tenant-view.png
+.. image:: /images/operator-console/operator-tenant-view.png
    :align: center
    :width: 70%
    :class: no-scaled-link
@@ -414,7 +534,7 @@ MinIO Tenant.
 - :guilabel:`LICENSE` - Enter your `SUBNET <https://min.io/pricing?ref=docs>`__ 
   license.
 
-11) Connect to the Tenant
+10) Connect to the Tenant
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The MinIO Operator creates services for the MinIO Tenant. Use the 
