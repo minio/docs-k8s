@@ -4,6 +4,7 @@ var gulp = require ('gulp');
 var cleanCSS = require('gulp-clean-css');
 var $ = require ('gulp-load-plugins') ();
 var connect = require('gulp-connect');
+var sass = require('gulp-sass')(require('sass'));
 
 var paths = {
     scss: {
@@ -15,21 +16,21 @@ var paths = {
         dir: 'source/_static/css',
         main: 'source/_static/scss/main.css',
         files: 'source/_static/scss/**/*.css',
-        dist: 'build/main/html/_static/css'
+        dist: 'build/master/html/_static/css'
     },
     js: {
         dir: 'source/_static/js',
         main: 'source/_static/js/main.js',
         files: 'source/_static/js/**/*.js',
-        dist: 'build/main/html/_static/js',
+        dist: 'build/master/html/_static/js',
     },
-    dist: 'build/main/html'
+    dist: 'build/master/html'
 }
 
 // Compile SCSS
 gulp.task('handleStyle', function() {
     return gulp.src (paths.scss.main)
-        .pipe($.sass ())
+        .pipe(sass ())
         .pipe($.autoprefixer())
         .pipe(gulp.dest (paths.css.dir))
         .pipe(cleanCSS())

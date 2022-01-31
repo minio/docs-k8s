@@ -40,7 +40,6 @@ extensions = [
     'minio',
     'sphinx_copybutton',
     'sphinx_tabs.tabs',
-    'recommonmark',
     'sphinx_markdown_tables',
     'sphinx-prompt',
     'sphinx_substitution_extensions',
