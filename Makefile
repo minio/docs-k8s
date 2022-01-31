@@ -28,9 +28,35 @@ dryrun:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)/$(GITDIR)" $(SPHINXOPTS) $(O)
 	@npm run build
 
+sync-operator-version:
+	@echo "Retrieving latest Operator version"
+	$(shell wget -O /tmp/downloads-operator.json https://api.github.com/repos/minio/operator/releases/latest)
+	$(eval OPERATOR = $(shell cat /tmp/downloads-operator.json | jq '.tag_name[1:]'))
+
+	@echo "Replacing variables"
+
+	@cp source/default-conf.py source/conf.py
+
+	@sed -i "s|OPERATOR|${OPERATOR}|g" source/conf.py
+
 sync-git:
 	@echo "Pulling down latest stable operator examples from $(OPERATORTAG)"
 	@echo "Storing files in $(OPERATORDIR)"
 
 	@wget $(OPERATORGIT)/examples/tenant.yaml \
 	  -O $(OPERATORDIR)/tenant.yaml
+
+clean:
+
+	@echo "Cleaning $(BUILDDIR)/$(GITDIR)"
+	@rm -rf $(BUILDDIR)/$(GITDIR)
+
+stage:
+	@make clean && make html
+	python -m http.server --directory $(BUILDDIR)/$(GITDIR)/html
+
+publish:
+	@make sync-operator-version
+	@make sync-git
+	@make clean
+	make html
