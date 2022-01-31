@@ -57,6 +57,5 @@ stage:
 
 publish:
 	@make sync-operator-version
-	@make sync-git
 	@make clean
 	make html
