@@ -16,3 +16,6 @@ __pycache__
 
 node_modules
 npm-debug.log
+.python-version
+main.min.css
+main.css

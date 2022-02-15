@@ -9,7 +9,7 @@ static HTML pages using ReSTructured Text.
 
 ## Prerequisites
 
-- Python 3.6.0 or later. MinIO uses the latest stable version of Python for regular writing and development work.
+- Python 3.10.X. 
 
 - NodeJS 14.5.0 or later.
 
@@ -30,10 +30,9 @@ using the following instructions as general guidance.
 
 3. Run `pip install -r requirements.txt` to setup the Python environment.
 
-4. Run `make html`
+4. Run `make stage`
 
-5. Run `python -m http.server --directory build/BRANCH/html`. Open your
-   browser to the output URL to view the staged output.
+5. Open your browser to http://localhost:8000 to view the staged output.
 
 This project is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/legalcode).
 

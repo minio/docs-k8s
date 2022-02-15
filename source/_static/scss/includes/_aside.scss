@@ -1,4 +1,4 @@
-.sidebar {
+aside.sidebar {
     width: $sidebar-width;
     position: fixed;
     left: 0;
@@ -9,6 +9,8 @@
     overflow-y: auto;
     height: 100%;
     z-index: $z-index-header - 1;
+    margin: 0;
+    border: none;
 
     @include breakpoint-min(breakpoints(xl)) {
         padding-top: $content-padding + $header-height;
