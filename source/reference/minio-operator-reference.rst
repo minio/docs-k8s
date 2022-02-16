@@ -45,9 +45,9 @@ templates. Users who would prefer a more simplified deployment experience
 that does *not* require familiarity with ``kustomize`` should use the
 :ref:`minio-kubectl-plugin` for deploying and managing MinIO Tenants.
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: ``krew``
+   .. tab-item:: ``krew``
 
       Use the following command to install the MinIO Operator *and* 
       MinIO Kubernetes Plugin using the 
@@ -71,7 +71,7 @@ that does *not* require familiarity with ``kustomize`` should use the
 
          kubectl minio init
 
-   .. tab:: ``kubectl``
+   .. tab-item:: ``kubectl``
 
       Use the following command to deploy the MinIO Operator using 
       ``kubectl`` and ``kustomize`` templates:
@@ -82,7 +82,7 @@ that does *not* require familiarity with ``kustomize`` should use the
 
          kubectl apply -k github.com/minio/operator/\?ref\=|minio-operator-latest-version|
 
-   .. tab:: ``kustomize``
+   .. tab-item:: ``kustomize``
 
 
       Use :github:`kustomize <kubernetes-sigs/kustomize>` to deploy the

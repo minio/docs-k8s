@@ -46,6 +46,11 @@ sync-git:
 	@wget $(OPERATORGIT)/examples/tenant.yaml \
 	  -O $(OPERATORDIR)/tenant.yaml
 
+sync-deps:
+	@echo "Synchronizing all external dependencies"
+	@make sync-operator-version
+	@make sync-git
+
 clean:
 
 	@echo "Cleaning $(BUILDDIR)/$(GITDIR)"
@@ -56,6 +61,5 @@ stage:
 	python -m http.server --directory $(BUILDDIR)/$(GITDIR)/html
 
 publish:
-	@make sync-operator-version
 	@make clean
 	make html

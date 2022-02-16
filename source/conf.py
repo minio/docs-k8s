@@ -39,13 +39,14 @@ extensions = [
     'sphinx.ext.extlinks',
     'minio',
     'sphinx_copybutton',
-    'sphinx_tabs.tabs',
     'sphinx_markdown_tables',
     'sphinx-prompt',
     'sphinx_substitution_extensions',
     'sphinx_togglebutton',
+    'sphinxcontrib.images',
+    'myst_parser',
+    'sphinx_design',
     'sphinx.ext.intersphinx',
-    'sphinxcontrib.images'
 ]
 
 # -- External Links

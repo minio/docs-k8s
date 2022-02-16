@@ -68,9 +68,9 @@ The following tabs provide example YAML objects for a local persistent
 volume and a supporting 
 :kube-docs:`StorageClass <concepts/storage/storage-classes/>`:
 
-.. tabs::
+.. tab-set::
    
-   .. tab:: Local Persistent Volume
+   .. tab-item:: Local Persistent Volume
 
       The following YAML describes a :kube-docs:`Local Persistent Volume
       <concepts/storage/volumes/#local>`:
@@ -82,7 +82,7 @@ volume and a supporting
       Replace values in brackets ``<VALUE>`` with the appropriate 
       value for the local drive.
 
-   .. tab:: Storage Class
+   .. tab-item:: Storage Class
 
       The following YAML describes a 
       :kube-docs:`StorageClass <concepts/storage/storage-classes/>` that 
@@ -252,16 +252,16 @@ You can temporarily expose each service using the
 traffic from the local host running ``kubectl`` to the services running inside 
 the Kubernetes cluster.
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: MinIO Tenant
+   .. tab-item:: MinIO Tenant
 
       .. code-block:: shell
          :class: copyable
 
          kubectl port-forward service/minio 443:443
 
-   .. tab:: MinIO Console
+   .. tab-item:: MinIO Console
    
       .. code-block:: shell
          :class: copyable

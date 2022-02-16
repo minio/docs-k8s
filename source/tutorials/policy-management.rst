@@ -112,9 +112,9 @@ policy JSON after saving.
 *Optional* You can skip this step if you do not intend to attach the policy to 
 a user or group immediately. 
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Users
+   .. tab-item:: Users
 
       To attach a policy to a MinIO user, click :guilabel:`Users` in the 
       left-hand navigation. Click the :guilabel:`Flag` icon to open the 
@@ -126,7 +126,7 @@ a user or group immediately.
       attached policy, specifying the newly created policy *replaces* the
       previous policy.
 
-   .. tab:: Groups
+   .. tab-item:: Groups
 
       To attach a policy to a MinIO group, click :guilabel:`Groups` in the 
       left-hand navigation. Click the :guilabel:`Flag` icon to open the 

@@ -83,9 +83,9 @@ Procedure
 
 Select the tab that corresponds to your preferred installation method:
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Red Hat Marketplace
+   .. tab-item:: Red Hat Marketplace
 
       Open the `MinIO Red Hat Marketplace listing
       <https://marketplace.redhat.com/en-us/products/minio-hybrid-cloud-object-storage>`__
@@ -108,7 +108,7 @@ Select the tab that corresponds to your preferred installation method:
       :guilabel:`Install Operator` to start the Operator Installation 
       procedure in OpenShift.
 
-   .. tab:: Red Hat OperatorHub
+   .. tab-item:: Red Hat OperatorHub
 
       Log into the OpenShift Web Console as a user with ``cluster-admin`` 
       privileges. 

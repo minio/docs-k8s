@@ -182,9 +182,9 @@ in the MinIO Tenant using a user-specified :kube-docs:`StorageClass
 You can skip this step if the cluster already has local ``PV`` resources and a
 ``StorageClass`` configured for use by the MinIO Tenant.
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Persistent Volume Example
+   .. tab-item:: Persistent Volume Example
 
       The following example YAML describes a local persistent volume that meets the 
       stated requirements:
@@ -222,7 +222,7 @@ You can skip this step if the cluster already has local ``PV`` resources and a
       volume the tenant requires. For example, a MinIO tenant
       using 16 disks requires 16 Persistent Volumes.
 
-   .. tab:: Storage Class Example
+   .. tab-item:: Storage Class Example
 
       The following example YAML describes a storage class that meets the stated
       requirements. The name of the storage class must match the storage class applied

@@ -231,9 +231,9 @@ Create a MinIO Tenant
    :github:`MinIO Server <minio/releases>` and 
    :github:`MinIO Console <console/releases>`.
 
-   .. tabs::
+   .. tab-set::
 
-      .. tab:: SYNTAX
+      .. tab-item:: SYNTAX
 
          The command has the following syntax:
 
@@ -241,7 +241,7 @@ Create a MinIO Tenant
 
             kubectl minio tenant create TENANT_NAME FLAGS [ FLAGS ]
 
-      .. tab:: EXAMPLE
+      .. tab-item:: EXAMPLE
 
          The following example creates a MinIO Tenant consisting of 
          4 MinIO servers with 8 drives each and a total capacity of 
@@ -407,9 +407,9 @@ Expand a MinIO Tenant
    MinIO Console. The new pool uses the same Docker image for the 
    MinIO Server and Console as the existing Tenant.
 
-   .. tabs::
+   .. tab-set::
 
-      .. tab:: SYNTAX
+      .. tab-item:: SYNTAX
 
          The command has the following syntax:
 
@@ -417,7 +417,7 @@ Expand a MinIO Tenant
 
             kubectl minio tenant expand TENANT_NAME --REQ_FLAGS [OPT_FLAGS]
 
-      .. tab:: EXAMPLE
+      .. tab-item:: EXAMPLE
 
          The following example expands a MinIO Tenant with a Pool consisting of 
          4 MinIO servers with 8 drives each and a total additional capacity of 
@@ -551,9 +551,9 @@ Get MinIO Tenant Details
    - The version of MinIO server and MinIO Console running on the Tenant
    - The configuration of each Pool in the Tenant.
 
-   .. tabs::
+   .. tab-set::
 
-      .. tab:: SYNTAX
+      .. tab-item:: SYNTAX
 
          The command has the following syntax:
 
@@ -561,7 +561,7 @@ Get MinIO Tenant Details
 
             kubectl minio tenant info TENANT_NAME [ FLAGS ]
 
-      .. tab:: EXAMPLE
+      .. tab-item:: EXAMPLE
 
          The following example retrieves the information of the MinIO 
          Tenant ``minio-tenant-1`` in the namespace ``minio-tenant-1``.
@@ -606,9 +606,9 @@ Upgrade MinIO Tenant
       MinIO upgrades the image used by all pods in the Tenant at once. This may
       result in downtime until the upgrade process completes.
 
-   .. tabs::
+   .. tab-set::
 
-      .. tab:: SYNTAX
+      .. tab-item:: SYNTAX
 
          The command has the following syntax:
 
@@ -616,7 +616,7 @@ Upgrade MinIO Tenant
 
             kubectl minio tenant upgrade TENANT_NAME FLAGS [FLAGS]
 
-      .. tab:: EXAMPLE
+      .. tab-item:: EXAMPLE
 
          The following example upgrades a MinIO Tenant to use the latest 
          stable version of the MinIO server:
@@ -685,9 +685,9 @@ Delete a MinIO Tenant
    diligence in ensuring the safety of stored data *prior* to deleting the 
    tenant.
 
-   .. tabs::
+   .. tab-set::
 
-      .. tab:: SYNTAX
+      .. tab-item:: SYNTAX
 
          The command has the following syntax:
 
@@ -695,7 +695,7 @@ Delete a MinIO Tenant
 
             kubectl minio tenant delete TENANT_NAME FLAGS [ FLAGS ]
 
-      .. tab:: EXAMPLE
+      .. tab-item:: EXAMPLE
 
             kubectl minio tenant delete minio-tenant-1 \
               --namespace minio-tenant-1
