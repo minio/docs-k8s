@@ -19,7 +19,7 @@ RAID or replication.
 
 Erasure Coding splits objects into data and parity blocks, where parity blocks
 support reconstruction of missing or corrupted data blocks. MinIO distributes
-both data and parity blocks across :mc:`minio server <minio-server>` nodes and
+both data and parity blocks across ::mc:`minio server <minio.server>` nodes and
 drives in an :ref:`Erasure Set <minio-ec-erasure-set>`. Depending on the
 configured parity, number of nodes, and number of drives per node in the Erasure
 Set, MinIO can tolerate the loss of up to half (``N/2``) of drives and still
@@ -103,5 +103,5 @@ the latest object version by default, but may retrieve any other version in the
 history of that object.
 
 You can enable or disable bucket versioning at any time using the 
-:mc-cmd:`mc version enable <mc-version-enable>` command. See 
+:mc-cmd:`mc version enable <mc.version.enable>` command. See 
 :ref:`minio-bucket-versioning` for more complete documentation. 
