@@ -133,7 +133,7 @@ rst_epilog = """
 
 rst_prolog = """
 
-.. |operator-version-stable| replace:: 4.4.4
+.. |operator-version-stable| replace:: 4.4.16
 
 """
 
