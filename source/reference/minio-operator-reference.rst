@@ -47,7 +47,7 @@ that does *not* require familiarity with ``kustomize`` should use the
 
 .. tab-set::
 
-   .. tab-item:: ``krew``
+   .. tab-item:: krew
 
       Use the following command to install the MinIO Operator *and* 
       MinIO Kubernetes Plugin using the 
@@ -71,7 +71,7 @@ that does *not* require familiarity with ``kustomize`` should use the
 
          kubectl minio init
 
-   .. tab-item:: ``kubectl``
+   .. tab-item:: kubectl
 
       Use the following command to deploy the MinIO Operator using 
       ``kubectl`` and ``kustomize`` templates:
@@ -82,7 +82,7 @@ that does *not* require familiarity with ``kustomize`` should use the
 
          kubectl apply -k github.com/minio/operator/\?ref\=|minio-operator-latest-version|
 
-   .. tab-item:: ``kustomize``
+   .. tab-item:: kustomize
 
 
       Use :github:`kustomize <kubernetes-sigs/kustomize>` to deploy the

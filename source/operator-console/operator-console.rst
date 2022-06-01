@@ -50,14 +50,7 @@ Tenant Management
 The MinIO Operator Console supports deploying, managing, and monitoring 
 MinIO Tenants on the Kubernetes cluster.
 
-.. image:: /images/operator-console/operator-dashboard.png
-   :align: center
-   :width: 70%
-   :class: no-scaled-link
-   :alt: MinIO Operator Console
-
-You can :ref:`deploy a MinIO Tenant <deploy-minio-tenant>` through the 
-Operator Console.
+You can :ref:`deploy a MinIO Tenant <deploy-minio-tenant>` through the Operator Console.
 
 The Operator Console automatically detects any MinIO Tenants 
 deployed on the cluster, whether provisioned through the Operator Console 

@@ -83,7 +83,7 @@ The output should display the Operator version as |operator-version-stable|.
 Kubernetes Version 1.19.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Starting with v4.0.0, the MinIO Operator requires Kubernetes 1.19.0 and later.
+Starting with v4.0.0, the MinIO Operator requires Kubernetes 1.19.0 or later.
 The Kubernetes infrastructure *and* the ``kubectl`` CLI tool must have the same
 version of 1.19.0+.
 
@@ -198,9 +198,11 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
      - Description
 
    * - :guilabel:`Name`
+       *(required)*
      - The name of the MinIO Tenant
 
    * - :guilabel:`Namespace`
+       *(required)*
      - The Kubernetes Namespace in which to deploy the tenant. You can create
        the namespace by selecting the plus :guilabel:`+` icon if it does not
        exist.
@@ -217,6 +219,7 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
        for installation and configuration instructions.
 
    * - :guilabel:`Number of Servers`
+       *(required)*
      - The total number of MinIO server pods to deploy in the Tenant.
        
        The Operator by default uses pod anti-affinity, such that the Kubernetes
@@ -224,7 +227,8 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
        the :guilabel:`Pod Placement` pane to modify the pod scheduling 
        settings for the Tenant.
 
-   * - :guilabel:`Number of Drives per Server`
+   * - :guilabel:`Drives per Server`
+       *(required)*
      - The number of storage volumes (Persistent Volume Claims) the Operator
        requests per Server. 
 
@@ -237,6 +241,7 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
        Persistent Volumes sufficient in number to match each generated PVC.
 
    * - :guilabel:`Total Size`
+       *(required)*
      - The total raw storage size for the Tenant. Specify both the total
        storage size *and* the :guilabel:`Unit` of that storage. All storage
        units are in SI values, e.g. Gi = GiB = 1024\ :sup:`3` bytes.
@@ -265,12 +270,33 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
        data on the cluster. Higher parity values increase tolerance to drive or
        node failure at the cost of total storage. See
        :ref:`minio-erasure-coding` for more complete documentation.
+
+   * - :guilabel:`CPU Request`
+     - Specify the number of CPUs to reserve on each node.
        
+   * - :guilabel:`Memory Request`
+     - Specify the amount of memory in Gibibytes to reserve on each node.
+
+   * - :guilabel:`Specify Limit`
+     - Move this toggle to :guilabel:`On` to display options to specify a limit to the resources available to the tenant.
+
+   * - :guilabel:`CPU Limit`
+       This option does not display if :guilabel:`Specify Limit` is set to :guilabel:`off`.
+     - Enter the maximum number of CPUs the tenant can use.
+       
+       For more on limits, see :kube-docs:`Resource Management for Pods and Containers <concepts/configuration/manage-resources-containers/>`
+
+   * - :guilabel:`Memory Limit`
+       This option does not display if :guilabel:`Specify Limit` is set to :guilabel:`off`.
+     - Enter the maximum amount of memory in Gibibytes the tenant can use.
+       
+       For more on limits, see :kube-docs:`Resource Management for Pods and Containers <concepts/configuration/manage-resources-containers/>`
+
 Select :guilabel:`Create` to create the Tenant using the current configuration.
 While all subsequent sections are *optional*, MinIO recommends reviewing them
 prior to deploying the Tenant.
 
-3) The :guilabel:`Configure` Section
+1) The :guilabel:`Configure` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :guilabel:`Configure` section contains optional configuration settings for
@@ -284,7 +310,7 @@ the MinIO Tenant and its supporting services.
    * - Field
      - Description
 
-   * - :guilabel:`Expose Services`
+   * - :guilabel:`Expose MinIO Services`
      - The MinIO Operator by default directs the MinIO Tenant services to
        request an externally accessible IP address from the Kubernetes cluster
        Load Balancer if one is available.
@@ -294,40 +320,42 @@ the MinIO Tenant and its supporting services.
        *may* include a load balancer that can respond to these requests.
 
        You can direct the Tenant to not make this request by toggling the
-       option to :guilabel:`Off` for the MinIO Service and Console Service.
+       option to :guilabel:`Off`.
 
-   * - :guilabel:`Override Tenant Defaults`
-     - The MinIO Operator sets the Kubernetes Security Context for pods to
+   * - :guilabel:`Expose Console Service`
+     - The MinIO Operator by default deploys a :ref:`MinIO Console <minio-console>` 
+       for each tenant.
+      
+       If you do not need a MinIO Console for the tenant, disable the Console by
+       toggling the option to :guilabel:`Off`.
+
+   * - :guilabel:`Set Custom Domains`
+     - You can define custom domains to use to access the tenant and the tenant's
+       MinIO Console.
+
+       To define domains, toggle the option to :guilabel:`On`.
+
+       You can specify a :guilabel:`Console Domain` to use to access the MinIO Console.
+
+       You can specify one or more domains to use to access the tenant directly under
+       :guilabel:`MinIO Domains`. Select the :guilabel:`+` button to add additional
+       domain name rows as needed. Select the :guilabel:`-` button to remove a row.
+
+       This sets up MinIO to use the domain, but additional action is needed in
+       your domain's DNS settings. That is out of scope for this documentation.
+
+   * - :guilabel:`Security Context`
+     - Select the toggle to switch it to :guilabel:`ON` to customize the security context for MinIO.
+       
+       The MinIO Operator sets the Kubernetes Security Context for pods to
        a default of ``1000`` for User, Group, and FsGroup. MinIO runs the
        pod using the ``root`` user.
 
-       You can modify the Security Context to direct MinIO to run using a
+        You can modify the Security Context to direct MinIO to run using a
        different User, Group, or FsGroup ID. You can also direct MinIO to not
        run as the Root user.
 
-   * - :guilabel:`Override Log Search Defaults`
-     - The MinIO Operator deploys a Log Search service (SQL Database and
-       Log Search API) to support Audit Log search in the MinIO Tenant Console.
-
-       You can modify the Security Context to run the associated pod commands
-       using a different User, Group, or FsGroup ID. You can also direct the pod
-       to not run commands as the Root user.
-
-       You can also modify the storage class and requested capacity associated
-       to the PVC generated to support the Log Search service.
-
-   * - :guilabel:`Override Prometheus Search Defaults`
-     - The MinIO Operator deploys a Prometheus service to support detailed
-       metrics in the MinIO Tenant Console.
-
-       You can modify the Security Context to run the associated pod commands
-       using a different User, Group, or FsGroup ID. You can also direct the pod
-       to not run commands as the Root user.
-
-       You can also modify the storage class and requested capacity associated
-       to the PVC generated to support the Prometheus service.
-
-4) The :guilabel:`Images` Section
+1) The :guilabel:`Images` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :guilabel:`Images` section contains container image settings used by the
