@@ -585,25 +585,34 @@ Tenant to faciliate SSE operations.
 9) The :guilabel:`Audit Log` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+By default, the tenant deploys with Audit Logs :guilabel:`Enabled`.
+This deploys a small PostgreSQL database and stores access logs of all calls into the tenant.
 
+Use the Audit Log section to enable or disable audit logs, define storage class or size of the PostgreSQL database used for the logs, and customize the Security Context and users.
 
-10) The :guilabel:`Monitoring` Section
+For more information about audit logs in MinIO, see the :ref:`Logging documentation <minio-logging>`.
+
+10)  The :guilabel:`Monitoring` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MinIO leverages `Prometheus <https://prometheus.io/>`__ for metrics and alerts.
+Use the Monitoring section to enable or disable monitoring, define storage class or size, or set security context.
+
+For more infomration about monitoring and metrics in MinIO, see the :ref:`Metrics and Alerts documentation <minio-metrics-and-alerts>`.
+
 
 11) Deploy and View the Tenant
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Select :guilabel:`Create` at any time to begin the deployment process. The
-MinIO Operator displays the root user credentials *once* as part of deploying
-the Tenant. Copy these credentials to a secure location.
+Select :guilabel:`Create` at the bottom of any section to begin the deployment process. 
+The MinIO Operator displays the root user credentials *once* as part of deploying
+the Tenant. Copy these credentials to a secure location, as they cannot be retrieved later.
 
-You can monitor the Tenant creation process from the 
-:guilabel:`Tenants` view. The :guilabel:`State` column updates throughout the 
-deployment process.
+You can monitor the Tenant creation process from the :guilabel:`Tenants` view. 
+The :guilabel:`State` column updates throughout the deployment process.
 
-Tenant deployment can take several minutes to complete. Once the 
-:guilabel:`State` reads as :guilabel:`Initialized`, click the Tenant to view 
-its details.
+Tenant deployment can take several minutes to complete. 
+Once the :guilabel:`State` reads as :guilabel:`Initialized`, click the Tenant to view its details.
 
 .. image:: /images/operator-console/operator-tenant-view.png
    :align: center
@@ -611,20 +620,29 @@ its details.
    :class: no-scaled-link
    :alt: Tenant View
 
-Each tab provides additional details or configuration options for the 
-MinIO Tenant. 
+Each tab provides additional details or configuration options for the MinIO Tenant. 
 
-- :guilabel:`METRICS` - Displays metrics collected from the MinIO Tenant.
-- :guilabel:`SECURITY` - Provides TLS-related configuration options.
-- :guilabel:`POOLS` - Supports expanding the tenant by adding more Server Pools.
-- :guilabel:`LICENSE` - Enter your `SUBNET <https://min.io/pricing?ref=docs>`__ 
-  license.
+- :guilabel:`Metrics` - Displays metrics collected from the MinIO Tenant.
+- :guilabel:`Identify Provider` - Change to or modify a 3rd party Identify Provider configuration.
+- :guilabel:`Security` - Provides TLS-related configuration options.
+- :guilabel:`Encryption` - Enable and configure encryption options.
+- :guilabel:`Pools` - Display and configure existing Server Pools or expand the tenant to additional Server Pools.
+- :guilabel:`Pods` - Display events, Describe details, and logs for pods.
+- :guilabel:`Monitoring` - Enable, disable, and configure monitoring configurations.
+- :guilabel:`Audit Log` - Display, enable, disable, and configure audit log configurations.
+- :guilabel:`Volumes` - Display or delete persistent volume claims.
+- :guilabel:`Events` - Display event details.
+- :guilabel:`License` - Enter your `SUBNET <https://min.io/pricing?ref=docs>`__ license.
 
-10) Connect to the Tenant
-~~~~~~~~~~~~~~~~~~~~~~~~~
+12)  Connect to the Tenant
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The MinIO Operator creates services for the MinIO Tenant. Use the 
-``kubectl get svc -n NAMESPACE`` command to review the deployed services:
+You can connect to the Tenant's console from the MinIO Operator by selecting the :guilabel:`Console` button at the top of the screen while viewing a Tenant.
+
+Or, to login with a tenant's credentials instead, you can follow the steps below to forward a port and access the tenant from a browser instead.
+
+The MinIO Operator creates services for the MinIO Tenant. 
+Use the ``kubectl get svc -n NAMESPACE`` command to review the deployed services:
 
 .. code-block:: shell
    :class: copyable
@@ -641,33 +659,25 @@ The MinIO Operator creates services for the MinIO Tenant. Use the
    minio-tenant-1-log-search-api      ClusterIP      10.103.5.235     <none>        8080/TCP         2d3h
    minio-tenant-1-prometheus-hl-svc   ClusterIP      None             <none>        9090/TCP         7h39m
 
-- The ``minio`` service corresponds to the MinIO Tenant service. Applications 
-  should use this service for performing operations against the MinIO Tenant.
+- The ``minio`` service corresponds to the MinIO Tenant service. 
+  Applications should use this service for performing operations against the MinIO Tenant.
  
-- The ``*-console`` service corresponds to the :minio-git:`MinIO Console 
-  <console>`. Administrators should use this service for accessing the MinIO
-  Console and performing administrative operations on the MinIO Tenant.
+- The ``*-console`` service corresponds to the :minio-git:`MinIO Console <console>`. 
+  Administrators should use this service for accessing the MinIO Console and performing administrative operations on the MinIO Tenant.
 
-The remaining services support Tenant operations and are not intended for 
-consumption by users or administrators.
+The remaining services support Tenant operations and are not intended for consumption by users or administrators.
  
 By default each service is visible only within the Kubernetes cluster. 
-Applications deployed inside the cluster can access the services using the 
-``CLUSTER-IP``. 
+Applications deployed inside the cluster can access the services using the ``CLUSTER-IP``. 
 
-Applications external to the Kubernetes cluster can access the services using
-the ``EXTERNAL-IP``. This value is only populated for Kubernetes clusters 
-configured for Ingress or a similar network access service. Kubernetes provides
-multiple options for configuring external access to services. See the Kubernetes
-documentation on :kube-docs:`Publishing Services (ServiceTypes)
-<concepts/services-networking/service/#publishing-services-service-types>` and
-:kube-docs:`Ingress <concepts/services-networking/ingress/>` for more complete
-information on configuring external access to services.
+Applications external to the Kubernetes cluster can access the services using the ``EXTERNAL-IP``. 
+This value is only populated for Kubernetes clusters configured for Ingress or a similar network access service. 
 
-You can temporarily expose each service using the 
-``kubectl port-forward`` utility. Run the following examples to forward 
-traffic from the local host running ``kubectl`` to the services running inside 
-the Kubernetes cluster.
+Kubernetes provides multiple options for configuring external access to services. 
+See the Kubernetes documentation on :kube-docs:`Publishing Services (ServiceTypes)<concepts/services-networking/service/#publishing-services-service-types>` and :kube-docs:`Ingress <concepts/services-networking/ingress/>` for more complete information on configuring external access to services.
+
+You can temporarily expose each service using the ``kubectl port-forward`` utility. 
+Run the following examples to forward traffic from the local host running ``kubectl`` to the services running inside the Kubernetes cluster.
 
 .. tab-set::
 
@@ -683,7 +693,14 @@ the Kubernetes cluster.
       .. code-block:: shell
          :class: copyable
 
-         kubectl port-forward service/minio-tenant-1-console 9443:9443
+         kubectl port-forward service/minio-tenant-1-console -n tenant-namespace 9443:9443
+
+YAML Files
+----------
+
+Experienced Kubernetes users can view or directly modify the YAML file for the tenant by selecting the :guilabel:`YAML` button while viewing a tenant.
+
+
 
 .. toctree::
    :titlesonly:
