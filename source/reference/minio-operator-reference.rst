@@ -94,8 +94,3 @@ that does *not* require familiarity with ``kustomize`` should use the
 
          kustomize build github.com/minio/operator/\?ref\=|minio-operator-latest-version| \
             > minio-operator-|minio-operator-latest-version|.yaml
-
-
-
-
-

@@ -296,7 +296,7 @@ Select :guilabel:`Create` to create the Tenant using the current configuration.
 While all subsequent sections are *optional*, MinIO recommends reviewing them
 prior to deploying the Tenant.
 
-1) The :guilabel:`Configure` Section
+3) The :guilabel:`Configure` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :guilabel:`Configure` section contains optional configuration settings for
@@ -355,7 +355,7 @@ the MinIO Tenant and its supporting services.
        different User, Group, or FsGroup ID. You can also direct MinIO to not
        run as the Root user.
 
-1) The :guilabel:`Images` Section
+4) The :guilabel:`Images` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :guilabel:`Images` section contains container image settings used by the
@@ -376,23 +376,32 @@ MinIO Tenant.
        `MinIO DockerHub <https://hub.docker.com/r/minio/minio/tags>`__
        repositories for a list of valid tags.
 
-   * - :guilabel:`Log Search API's Image`
-     - The container image to use for MinIO Log Search API.
-
    * - :guilabel:`KES Image`
      - The container image to use for MinIO :minio-git:`KES <kes>`.
 
-   * - | :guilabel:`Log Search Postgres Image`
-       | :guilabel:`Log Search Postgres Init Image`
+   * - :guilabel:`API`
+     - The container image to use for MinIO Log Search API.
+
+   * - | :guilabel:`PostgreSQL`
+       | :guilabel:`PostgreSQL Init`
      - The container images to use for starting the PostgreSQL service
        supporting the Log Search API
 
-   * - | :guilabel:`Prometheus Image`
-       | :guilabel:`Prometheus Sidecar Image`
-       | :guilabel:`Prometheus Init Image`
+   * - | :guilabel:`Prometheus`
+       | :guilabel:`Prometheus Sidecar`
+       | :guilabel:`Prometheus Init`
 
      - The container images to use for starting the Prometheus service
        supporting the Log Search API.
+
+   * - :guilabel:`Custom Container Registry`
+     - If you store the images to use in a private registry, toggle this 
+       option to :guilabel:`ON`
+       
+       Specify the registry's :guilabel:`Endpoint` address, then the 
+       :guilabel:`Username` and :guilabel:`Password` to use to log in to 
+       the registry.
+       All three entries are required to access the private registry.
 
 5) The :guilabel:`Pod Placement` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -428,6 +437,33 @@ MinIO Tenant.
      - Directs the operator to set a Node Selector such that pods only deploy
        onto Kubernetes workers whose labels match the selector.
 
+   * - :guilabel:`With Pod Anti-Affinity`
+     - Set the toggle to :guilabel:`ON` to repel pods from running on the same node
+       as another similar pod.
+
+       Use this option to choose whether to use the defined :guilabel:`Labels` for :kube-docs:`affinity or anti-affinity <concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity>`.
+
+       This option only displays if you select the :guilabel:`Node Selector` option.
+
+   * - :guilabel:`Labels`
+     - Add the label key:value pairs to use to define affinity or anti-affinity for pod placement.
+       Select the key in the first dropdown and the value in the second dropdown.
+
+       Use the :guilabel:`+` button to add another label.
+       Use the :guilabel:`-` button to remove a label.
+
+       This option only displays if you select the :guilabel:`Node Selector` option.
+
+   * - :guilabel:`Tolerations`
+     - Set rules for what nodes a MinIO pod can deploy to. 
+       Use the :guilabel:`+` button to add another toleration rule.
+       Use the :guilabel:`-` button to remove a toleration rule.
+
+       Pod toleration rules work in conjunction with node taint rules to adjust the
+       probability for pod placement.
+       For more, see :kube-docs:`Taints and Tolerations <concepts/scheduling-eviction/taint-and-toleration/>`
+       in the Kubernetes documentation.
+
 6) The :guilabel:`Identity Provider` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -446,19 +482,28 @@ settings for the MinIO Tenant. This includes configuring an external IDP such as
      - Description
 
    * - :guilabel:`Built-In`
-     - Configure additional internal MinIO users for the Operator to create
-       as part of deploying the Tenant.
+     - Configure additional users for the Operator to create as part of deploying 
+       the Tenant using the internal MinIO identity management.
+
+       Enter the user access key and secret key in the fields.
+       Use the :guilabel:`+` button to add additional credentials.
+
+       Use the Randomize Credentials button to generate random access and secret keys.
 
    * - :guilabel:`OpenID`
      - Configure an OpenID Connect-compatible servce as an external Identity
        Provider (e.g. Keycloak, Okta, Google, Facebook, Dex) to manage MinIO
        users. 
 
+       Add the information about your OpenID provider in the fields that display.
+
    * - :guilabel:`Active Directory`
      - Configure an Active Directory or OpenLDAP service as the external
        Identity Provider to manage MinIO users.
 
-7) The :guilabel:`Security` Section
+       Add the details for the Active Directory/LDAP server in the fields that display.
+
+1) The :guilabel:`Security` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :guilabel:`Security` section contains TLS certificate settings
@@ -472,10 +517,10 @@ for the MinIO Tenant.
    * - Field
      - Description
 
-   * - :guilabel:`Enable TLS`
+   * - :guilabel:`TLS`
      - Enable or disable TLS for the MinIO Tenant. 
 
-   * - :guilabel:`Enable AutoCert`
+   * - :guilabel:`AutoCert`
      - Directs the Operator to generate Certificate Signing Requests for
        submission to the Kubernetes TLS API.
 
@@ -485,6 +530,8 @@ for the MinIO Tenant.
    * - :guilabel:`Custom Certificates`
      - Specify one or more custom TLS certificates for use by the MinIO Tenant.
        
+       Upload each file for the certificate and key for MinIO Certificates or for the Cert for MinIO CA Certificates.
+
        MinIO supports Server Name Indication (SNI) such that the Tenant can
        select the appropriate TLS certificate based on the request hostname 
        and the certificate Subject Alternative Name.
@@ -520,6 +567,9 @@ Tenant to faciliate SSE operations.
        external KMS for storing root encryption keys. See 
        :ref:`minio-sse-aws` for guidance on the displayed fields.
 
+   * - :guilabel:`Gemalto`
+     - Configure `Thales CipherTrust (formerly Gemalto KeySecure) <https://cpl.thalesgroup.com/encryption/key-management/ciphertrust-cloud-key-manager>`)__ as the external KMS for storing root encryption keys.
+
    * - :guilabel:`GCP`
      - Configure `Google Cloud Platform Secret Manager
        <https://cloud.google.com/secret-manager/>`__ as the external KMS for
@@ -532,7 +582,15 @@ Tenant to faciliate SSE operations.
        as the external KMS for storing root encryption keys. See
        :ref:`minio-sse-azure` for guidance on the displayed fields.       
 
-9) Deploy and View the Tenant
+9) The :guilabel:`Audit Log` Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+10) The :guilabel:`Monitoring` Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+11) Deploy and View the Tenant
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Select :guilabel:`Create` at any time to begin the deployment process. The
