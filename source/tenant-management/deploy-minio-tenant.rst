@@ -197,12 +197,12 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
    * - Field
      - Description
 
-   * - :guilabel:`Name`
-       *(required)*
+   * - | :guilabel:`Name`
+       | *(required)*
      - The name of the MinIO Tenant
 
-   * - :guilabel:`Namespace`
-       *(required)*
+   * - | :guilabel:`Namespace`
+       | *(required)*
      - The Kubernetes Namespace in which to deploy the tenant. You can create
        the namespace by selecting the plus :guilabel:`+` icon if it does not
        exist.
@@ -218,8 +218,8 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
        :minio-git:`DirectCSI Documentation <direct-csi/blob/master/README.md>`
        for installation and configuration instructions.
 
-   * - :guilabel:`Number of Servers`
-       *(required)*
+   * - | :guilabel:`Number of Servers`
+       | *(required)*
      - The total number of MinIO server pods to deploy in the Tenant.
        
        The Operator by default uses pod anti-affinity, such that the Kubernetes
@@ -227,8 +227,8 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
        the :guilabel:`Pod Placement` pane to modify the pod scheduling 
        settings for the Tenant.
 
-   * - :guilabel:`Drives per Server`
-       *(required)*
+   * - | :guilabel:`Drives per Server`
+       | *(required)*
      - The number of storage volumes (Persistent Volume Claims) the Operator
        requests per Server. 
 
@@ -240,8 +240,8 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
        The specified :guilabel:`Storage Class` *must* correspond to a set of
        Persistent Volumes sufficient in number to match each generated PVC.
 
-   * - :guilabel:`Total Size`
-       *(required)*
+   * - | :guilabel:`Total Size`
+       | *(required)*
      - The total raw storage size for the Tenant. Specify both the total
        storage size *and* the :guilabel:`Unit` of that storage. All storage
        units are in SI values, e.g. Gi = GiB = 1024\ :sup:`3` bytes.
@@ -280,14 +280,14 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
    * - :guilabel:`Specify Limit`
      - Move this toggle to :guilabel:`On` to display options to specify a limit to the resources available to the tenant.
 
-   * - :guilabel:`CPU Limit`
-       This option does not display if :guilabel:`Specify Limit` is set to :guilabel:`off`.
+   * - | :guilabel:`CPU Limit`
+       | This option does not display if :guilabel:`Specify Limit` is set to :guilabel:`off`.
      - Enter the maximum number of CPUs the tenant can use.
        
        For more on limits, see :kube-docs:`Resource Management for Pods and Containers <concepts/configuration/manage-resources-containers/>`
 
-   * - :guilabel:`Memory Limit`
-       This option does not display if :guilabel:`Specify Limit` is set to :guilabel:`off`.
+   * - | :guilabel:`Memory Limit`
+       | This option does not display if :guilabel:`Specify Limit` is set to :guilabel:`off`.
      - Enter the maximum amount of memory in Gibibytes the tenant can use.
        
        For more on limits, see :kube-docs:`Resource Management for Pods and Containers <concepts/configuration/manage-resources-containers/>`
