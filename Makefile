@@ -37,7 +37,7 @@ sync-operator-version:
 
 	@cp source/default-conf.py source/conf.py
 
-	@sed -i "s|OPERATOR|${OPERATOR}|g" source/conf.py
+	@sed -i "" "s|OPERATOR|${OPERATOR}|g" source/conf.py
 	@git add source/conf.py && git commit -m "Updating MinIO Operator version to ${OPERATOR}"
 
 sync-git:
@@ -47,12 +47,12 @@ sync-git:
 	@wget $(OPERATORGIT)/examples/tenant.yaml \
 	  -O $(OPERATORDIR)/tenant.yaml
 
-	@git add source/conf.py && git commit -m "Updating MinIO Operator examples"
+	@git add source/includes/git-operator/tenant.yaml && git commit -m "Updating MinIO Operator examples"
 
 sync-deps:
 	@echo "Synchronizing all external dependencies"
 	@make sync-operator-version
-	@make sync-git
+#	@make sync-git
 
 clean:
 
