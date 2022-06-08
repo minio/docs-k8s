@@ -34,7 +34,7 @@ See :ref:`deploy-operator-kubernetes` for complete documentation on deploying th
 Kubernetes Version 1.19.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Starting with v4.0.0, the MinIO Operator and MinIO Kubernetes Plugin require Kubernetes 1.19.0 and later. 
+MinIO Operator |operator-version-stable| and MinIO Kubernetes Plugin require Kubernetes 1.19.0 or later. 
 The Kubernetes infrastructure *and* the ``kubectl`` CLI tool must have the same version of 1.19.0+.
 
 Locally Attached Drives
@@ -45,13 +45,13 @@ MinIO’s strict read-after-write and list-after-write consistency model require
 MinIO also shows best performance with locally-attached drives.
 
 MinIO automatically generates :kube-docs:`Persistent Volume Claims (PVC) <concepts/storage/persistent-volumes/#persistentvolumeclaims>` as part of deploying a MinIO Tenant. 
-The Operator generates one PVC for each volume in the tenant. 
-For example, deploying a Tenant with 16 volumes requires 16 ``PV``.
+The Operator generates one PVC for each volume in the tenant plus two additional claims for Tenant services (logging and metrics). 
+For example, deploying a Tenant with 16 volumes requires 18 ``PVC``.
 
-This procedure uses the MinIO :minio-git:`DirectCSI <direct-csi>` driver to automatically provision Persistent Volumes from locally attached drives to support the generated PVC. 
-See the :minio-git:`DirectCSI Documentation <direct-csi/blob/master/README.md>` for installation and configuration instructions.
+This procedure uses the MinIO :minio-git:`DirectPV <directpv>` driver to automatically provision Persistent Volumes from locally attached drives to support the generated PVC. 
+See the :minio-git:`DirectPV Documentation <directpv/blob/master/docs/installation.md>` for installation and configuration instructions.
 
-For clusters which cannot deploy MinIO Direct CSI, use :kube-docs:`Local Persistent Volumes <concepts/storage/volumes/#local>`.
+For clusters which cannot deploy MinIO DirectPV, use :kube-docs:`Local Persistent Volumes <concepts/storage/volumes/#local>`.
 
 The following tabs provide example YAML objects for a local persistent volume and a supporting :kube-docs:`StorageClass <concepts/storage/storage-classes/>`:
 
@@ -131,7 +131,7 @@ The following example creates a 4-node MinIO deployment with a total capacity of
      --servers                 4                    \
      --volumes                 16                   \
      --capacity                16Ti                 \
-     --storage-class           direct-csi-min-io    \
+     --storage-class           directpv-min-io    \
      --namespace               minio-tenant-1
 
 The following table explains each argument specified to the command:
@@ -160,7 +160,7 @@ The following table explains each argument specified to the command:
 
    * - :mc-cmd-option:`~kubectl minio tenant create storage-class`
      - The Kubernetes ``StorageClass`` to use when creating each PVC. 
-       This example uses the MinIO :minio-git:`DirectCSI <direct-csi>` storage class.
+       This example uses the MinIO :minio-git:`DirectPV <directpv>` storage class.
 
    * - :mc-cmd-option:`~kubectl minio tenant create namespace`
      - The Kubernetes namespace in which to deploy the MinIO Tenant.

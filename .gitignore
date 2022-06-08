@@ -19,3 +19,4 @@ npm-debug.log
 .python-version
 main.min.css
 main.css
+package-lock.json

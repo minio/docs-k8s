@@ -83,7 +83,7 @@ The output should display the Operator version as |operator-version-stable|.
 Kubernetes Version 1.19.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Starting with v4.0.0, the MinIO Operator requires Kubernetes 1.19.0 or later.
+MinIO Operator |operator-version-stable| requires Kubernetes 1.19.0 or later.
 The Kubernetes infrastructure *and* the ``kubectl`` CLI tool must have the same
 version of 1.19.0+.
 
@@ -105,13 +105,10 @@ deploying a MinIO Tenant. The Operator generates one PVC for each volume in the
 tenant *plus* two PVC to support collecting Tenant Metrics and logs. For
 example, deploying a Tenant with 16 volumes requires 18 (16 + 2) ``PV``.
 
-This procedure uses the MinIO :minio-git:`DirectCSI <direct-csi>` driver to
-automatically provision Persistent Volumes from locally attached drives to
-support the generated PVC. See the :minio-git:`DirectCSI Documentation
-<direct-csi/blob/master/README.md>` for installation and configuration
-instructions.
+This procedure uses the MinIO :minio-git:`DirectPV <directpv>` driver to automatically provision Persistent Volumes from locally attached drives to support the generated PVC. 
+See the :minio-git:`DirectPV Documentation <directpv/blob/master/docs/installation.md>` for installation and configuration instructions.
 
-For clusters which cannot deploy MinIO Direct CSI, 
+For clusters which cannot deploy MinIO DirectPV, 
 :kube-docs:`Local Persistent Volumes <concepts/storage/volumes/#local>`.
 
 The following tabs provide example YAML objects for a local persistent 
@@ -213,10 +210,8 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
      - Specify the Kubernetes Storage Class the Operator uses when generating
        Persistent Volume Claims for the Tenant. 
 
-       This procedure assumes using the :minio-git:`DirectCSI <direct-csi>`
-       storage class ``direct-csi-min-io``. See the 
-       :minio-git:`DirectCSI Documentation <direct-csi/blob/master/README.md>`
-       for installation and configuration instructions.
+       This procedure assumes using the :minio-git:`DirectPV <directpv>` storage class ``directpv-min-io``. 
+       See the :minio-git:`DirectPV Documentation <directpv/blob/master/docs/installation.md>`for installation and configuration instructions.
 
    * - | :guilabel:`Number of Servers`
        | *(required)*
@@ -271,32 +266,34 @@ Settings marked with an asterisk :guilabel:`*` are *required*:
        node failure at the cost of total storage. See
        :ref:`minio-erasure-coding` for more complete documentation.
 
-   * - :guilabel:`CPU Request`
+   * - :guilabel:`CPU Request` :sup:`*`
      - Specify the number of CPUs to reserve on each node.
-       
-   * - :guilabel:`Memory Request`
+
+   * - :guilabel:`Memory Request` :sup:`*`
      - Specify the amount of memory in Gibibytes to reserve on each node.
 
-   * - :guilabel:`Specify Limit`
+   * - :guilabel:`Specify Limit` :sup:`*`
      - Move this toggle to :guilabel:`On` to display options to specify a limit to the resources available to the tenant.
 
-   * - | :guilabel:`CPU Limit`
+   * - | :guilabel:`CPU Limit` :sup:`*`
        | This option does not display if :guilabel:`Specify Limit` is set to :guilabel:`off`.
-     - Enter the maximum number of CPUs the tenant can use.
+     - | Enter the maximum number of CPUs the tenant can use.
+       | If you do not enter a CPU Request, a CPU Limit value acts as the CPU Request value.
        
-       For more on limits, see :kube-docs:`Resource Management for Pods and Containers <concepts/configuration/manage-resources-containers/>`
-
-   * - | :guilabel:`Memory Limit`
+   * - | :guilabel:`Memory Limit` :sup:`*`
        | This option does not display if :guilabel:`Specify Limit` is set to :guilabel:`off`.
-     - Enter the maximum amount of memory in Gibibytes the tenant can use.
+     - | Enter the maximum amount of memory in Gibibytes the tenant can use.
+       | If you do not enter a Memory Request, a Memory Limit value acts as the Memory Request value.
        
-       For more on limits, see :kube-docs:`Resource Management for Pods and Containers <concepts/configuration/manage-resources-containers/>`
+:sup:`*` Requests are "soft". A node may use more than the specified amount of a resource if more is available.
+Limits are "hard". A node may not use more than the specified amount of a resource, even if more is available.
+For more, see :kube-docs:`Requests and Limits <concepts/configuration/manage-resources-containers/#requests-and-limits>` in the Kubernetes documentation.
 
 Select :guilabel:`Create` to create the Tenant using the current configuration.
 While all subsequent sections are *optional*, MinIO recommends reviewing them
 prior to deploying the Tenant.
 
-3) The :guilabel:`Configure` Section
+1) The :guilabel:`Configure` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :guilabel:`Configure` section contains optional configuration settings for
@@ -351,7 +348,7 @@ the MinIO Tenant and its supporting services.
        a default of ``1000`` for User, Group, and FsGroup. MinIO runs the
        pod using the ``root`` user.
 
-        You can modify the Security Context to direct MinIO to run using a
+       You can modify the Security Context to direct MinIO to run using a
        different User, Group, or FsGroup ID. You can also direct MinIO to not
        run as the Root user.
 
@@ -398,12 +395,11 @@ MinIO Tenant.
      - If you store the images to use in a private registry, toggle this 
        option to :guilabel:`ON`
        
-       Specify the registry's :guilabel:`Endpoint` address, then the 
-       :guilabel:`Username` and :guilabel:`Password` to use to log in to 
+       To access the private registry, specify the registry's :guilabel:`Endpoint` address, :guilabel:`Username`, and :guilabel:`Password` to use to log in to 
        the registry.
-       All three entries are required to access the private registry.
+       You must make all three entries for access.
 
-5) The :guilabel:`Pod Placement` Section
+1) The :guilabel:`Pod Placement` Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :guilabel:`Pod Placement` section contains pod scheduler settings for the
@@ -438,16 +434,18 @@ MinIO Tenant.
        onto Kubernetes workers whose labels match the selector.
 
    * - :guilabel:`With Pod Anti-Affinity`
-     - Set the toggle to :guilabel:`ON` to repel pods from running on the same node
+     - Set the toggle to :guilabel:`ON` to reduce the likelihood of pods running on the same node
        as another similar pod.
 
-       Use this option to choose whether to use the defined :guilabel:`Labels` for :kube-docs:`affinity or anti-affinity <concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity>`.
+       Configture this option to direct Kubernetes to use the defined :guilabel:`Labels` for :kube-docs:`affinity or anti-affinity <concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity>`.
 
        This option only displays if you select the :guilabel:`Node Selector` option.
 
    * - :guilabel:`Labels`
      - Add the label key:value pairs to use to define affinity or anti-affinity for pod placement.
        Select the key in the first dropdown and the value in the second dropdown.
+
+       The specified labels must allow MinIO to deploy all pods in the Tenant onto the Kubernetes cluster.
 
        Use the :guilabel:`+` button to add another label.
        Use the :guilabel:`-` button to remove a label.
@@ -482,8 +480,7 @@ settings for the MinIO Tenant. This includes configuring an external IDP such as
      - Description
 
    * - :guilabel:`Built-In`
-     - Configure additional users for the Operator to create as part of deploying 
-       the Tenant using the internal MinIO identity management.
+     - Configure additional MinIO-managed users to create as part of deploying the Tenant.
 
        Enter the user access key and secret key in the fields.
        Use the :guilabel:`+` button to add additional credentials.
