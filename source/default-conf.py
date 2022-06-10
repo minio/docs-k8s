@@ -23,7 +23,7 @@ sys.path.append(os.path.abspath('../sphinxext'))
 # -- Project information -----------------------------------------------------
 
 project = 'MinIO Hybrid Cloud'
-copyright = '2020, MinIO'
+copyright = '2022, MinIO'
 author = 'Ravind Kumar'
 
 # The full version, including alpha/beta/rc tags
