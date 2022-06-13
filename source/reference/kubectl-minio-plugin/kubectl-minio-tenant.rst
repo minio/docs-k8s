@@ -83,3 +83,15 @@ The command supports the following flags:
 
    The namespace for which to access the operator.
    Defaults to ``minio-operator``.
+
+.. toctree::
+   :titlesonly:
+   :hidden:
+
+   /reference/kubectl-minio-plugin/kubectl-minio-tenant-create
+   /reference/kubectl-minio-plugin/kubectl-minio-tenant-delete
+   /reference/kubectl-minio-plugin/kubectl-minio-tenant-expand
+   /reference/kubectl-minio-plugin/kubectl-minio-tenant-info
+   /reference/kubectl-minio-plugin/kubectl-minio-tenant-list
+   /reference/kubectl-minio-plugin/kubectl-minio-tenant-report
+   /reference/kubectl-minio-plugin/kubectl-minio-tenant-upgrade
