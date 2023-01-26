@@ -2,6 +2,8 @@
 
 This repository contains the source code for https://docs.min.io/minio/k8s. 
 
+This repository is now fully defunct and has been absorbed in its entirety by https://github.com/minio/docs.
+
 # Build Instructions
 
 MinIO uses [Sphinx](https://www.sphinx-doc.org/en/master/index.html) to generate
